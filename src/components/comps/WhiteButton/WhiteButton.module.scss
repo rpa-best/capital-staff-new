@@ -1,0 +1,19 @@
+.button {
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  color: #212529;
+  border: 1px solid #0d6efd;
+  background-color: white;
+  padding: 10px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #0d6efd;
+    color: #f8f9fa;
+  }
+
+  &.active {
+    background-color: #0069b4;
+    color: #f8f9fa;
+  }
+}

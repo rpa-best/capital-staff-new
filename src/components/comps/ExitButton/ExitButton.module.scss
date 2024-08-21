@@ -1,0 +1,14 @@
+.button {
+  text-align: center;
+  text-decoration: none;
+  color: rgb(128, 128, 128);
+  font-size: 1rem;
+  font-family: Roboto, sans-serif;
+  background-color: #f8f9fa;
+  border: none;
+  padding: 10px 10px 10px 10px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}

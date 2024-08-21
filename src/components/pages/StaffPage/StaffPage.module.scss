@@ -1,0 +1,108 @@
+.staffContainer {
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+  background-color: #e7e6e6;
+  width: 100%;
+  height: fit-content;
+  min-height: 100vh;
+  padding: 20px 40px;
+
+  @media (min-width: 1400px) {
+    padding-left: 10vw;
+    padding-right: 10vw;
+  }
+
+  @media (max-width: 500px) {
+    padding: 10px 20px;
+  }
+}
+
+.headContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-right: 200px;
+
+  .dropDownContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    padding-left: 20px;
+
+    @media (max-width: 750px) {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 20px
+    }
+  }
+
+  .dropDown {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  @media (max-width: 700px) {
+    padding-right: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    gap: 10px
+  }
+}
+
+
+.image {
+  width: 60px;
+  height: 60px;
+  border: none;
+}
+
+.attributes {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0 10px 0;
+}
+
+.links {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.link {
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  color: black;
+  text-decoration: none;
+}
+
+.link:hover {
+  color: #0d6efd;
+}
+
+.downloadButton {
+  padding-left: 10px;
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+}

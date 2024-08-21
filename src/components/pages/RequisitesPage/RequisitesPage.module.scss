@@ -1,0 +1,68 @@
+.requisitesContainer {
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+  background-color: #e7e6e6;
+  width: 100vw;
+  height: fit-content;
+  min-height: 100vh;
+  padding: 20px 40px;
+
+  @media (min-width: 1400px) {
+    padding-left: 10vw;
+    padding-right: 10vw;
+  }
+
+  @media (max-width: 500px) {
+    padding: 10px 20px;
+  }
+
+
+  .modalDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+}
+
+.headContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.cards {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  gap: 40px;
+  margin-bottom: 50px;
+}
+
+.modalFields {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: left;
+  align-items: center;
+  gap: 10px;
+}
+
+.topBar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  .title {
+    margin-right: 20px;
+    @media (max-width: 500px) {
+      font-size: 25px;
+      padding: 10px 20px;
+    }
+  }
+}

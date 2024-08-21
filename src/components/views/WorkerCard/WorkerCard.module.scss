@@ -1,0 +1,32 @@
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  color: #212529;
+  background-color: #FFFFFF;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.properties {
+  margin: 0 0 0 10px;
+}
+
+.row {
+  padding-bottom: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+}
+.genDir {
+  font-family: Arial, sans-serif;
+  font-size: 22px;
+}
+
+.compName {
+  display: flex;
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  margin-bottom: 10px;
+}

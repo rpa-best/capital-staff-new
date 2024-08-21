@@ -1,0 +1,66 @@
+.cardContainer {
+  flex: 1 1 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: fit-content;
+  height: fit-content;
+  max-width: 700px;
+  min-height: 450px;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  color: #212529;
+  background-color: #FFFFFF;
+  border-radius: 5px;
+}
+
+.statusActive {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  color: #f8f9fa;
+  border-radius: 0 5px 0 5px;
+  background-color: #0069b4;
+  padding: 5px;
+  margin-left: auto;
+}
+
+.statusCompleted {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  color: #f8f9fa;
+  border-radius: 0 5px 0 5px;
+  background-color: #149302;
+  padding: 5px;
+  margin-left: auto;
+}
+
+.company {
+  margin-left: 10px;
+}
+
+.properties {
+  margin: 0 0 0 10px;
+}
+
+.row {
+  padding-bottom: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+}
+
+.button {
+  margin: 0 10px 20px 10px;
+}
+
+.genDir {
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+}
