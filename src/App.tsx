@@ -38,6 +38,12 @@ function App() {
                             <StaffPage />
                         </RequireAuth>
                     }></Route>
+                    <Route path={DOCUMENTS_PAGE} element={
+                        <RequireAuth fallbackPath={LOGIN_PAGE}>
+                            <DocumentsPage/>
+                        </RequireAuth>
+                    }></Route>
+                    }></Route>
                     <Route path={WORKER_INFO_PAGE} element={
                         <RequireAuth fallbackPath={LOGIN_PAGE}>
                             <WorkerPage />
