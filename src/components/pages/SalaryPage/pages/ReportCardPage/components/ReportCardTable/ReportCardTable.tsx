@@ -135,8 +135,9 @@ export const ReportCardTable: FC<ReportCardTableProps> = ({
             return;
         }
         
+        const MIN_VALUE = 0
         const MAX_VALUE = 24;
-        if (!value || +value > MAX_VALUE) {
+        if (!value || +value < MIN_VALUE || +value > MAX_VALUE) {
             setEditCell(undefined)
             return;
         }
