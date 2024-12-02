@@ -43,6 +43,17 @@ function App() {
                             <DocumentsPage/>
                         </RequireAuth>
                     }></Route>
+                    <Route path={SALARY_PAGE}
+                           element={
+                               <RequireAuth fallbackPath={LOGIN_PAGE}>
+                                   <SalaryPage/>
+                               </RequireAuth>
+                           } children={
+                        <>
+                            <Route index element={<Navigate to={SALARY_STATEMENTS_PAGE} />} />
+                            <Route  path={SALARY_STATEMENTS_PAGE} element={<StatementsPage/>}/>
+                            <Route index path={REPORT_CARD_PAGE} element={<ReportCardPage/>}/>
+                        </>
                     }></Route>
                     <Route path={WORKER_INFO_PAGE} element={
                         <RequireAuth fallbackPath={LOGIN_PAGE}>

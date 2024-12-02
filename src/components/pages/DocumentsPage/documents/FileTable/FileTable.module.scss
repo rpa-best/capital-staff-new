@@ -1,0 +1,35 @@
+.tableHeaderCell {
+  padding: 6px 10px;
+  border-bottom: 1px solid #d1d1d1;
+}
+
+.tableBodyCell {
+  padding: 6px 10px;
+}
+
+.fileCol {
+  text-align: start;
+  width: 100%;
+}
+
+.dateCol {
+  text-align: end;
+  min-width: 180px;
+}
+
+.sizeCol {
+  text-align: end;
+  min-width: 180px;
+}
+
+.fileCellValue {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: black;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
