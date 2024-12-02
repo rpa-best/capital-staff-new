@@ -55,19 +55,51 @@ export const ReportCardTable: FC<ReportCardTableProps> = ({
             dayName: days[day.getDay()],
             day: day.getDate()
         }));
+        
+        type MonthHalf = 'first' | 'second';
+        
+        const getMonthHalf = (monthDay: number): MonthHalf => {
+            return monthDay <= 15 ? 'first' : 'second'
+        }
+        
+        const getMonthHalfItems = (half: MonthHalf) => {
+            return reportCardItems.filter(item => {
+                const day = new Date(item.date).getDate();
+                return getMonthHalf(day) === half;
+            });
+        };
+        
+        const isLockedRange = (items: ReportCardItem[]) => items.some(x => !x.editable);
+        const firstMonthHalfIsLocked = isLockedRange(getMonthHalfItems('first'));
+        const secondMonthHalfIsLocked = isLockedRange(getMonthHalfItems('second'));
+        
+        const now = new Date();
+        const dayIsLocked = (date: string) => {
+            const dayDate = new Date(date);
+            if (dayDate > now) return true;
+            
+            const monthHalf = getMonthHalf(dayDate.getDate());
+
+            return (monthHalf === 'first' && firstMonthHalfIsLocked) ||
+                (monthHalf === 'second' && secondMonthHalfIsLocked);
+        }
 
         const rows = workers.map<TableRow>(worker => {
             const values = monthDays.map(day => {
                 const date = getDashedDateString(day)
 
-                let tableCell = tableMap.has(worker.id) ? tableMap.get(worker.id)?.get(date) : undefined;
+                let reportCardItem = tableMap.has(worker.id)
+                    ? tableMap.get(worker.id)?.get(date)
+                    : undefined;
 
-                return {
-                    id: tableCell?.id,
+                const tableCell: TableDay = {
+                    id: reportCardItem?.id,
                     date,
-                    editable: tableCell?.editable ?? true,
-                    value: tableCell?.value
-                }
+                    editable: !dayIsLocked(date),
+                    value: reportCardItem?.value
+                };
+
+                return tableCell
             })
 
             return {
@@ -92,12 +124,20 @@ export const ReportCardTable: FC<ReportCardTableProps> = ({
     const [editCellLoading, setEditCellLoading] = useState(false)
 
     const handleDayCellDoubleClick = (workerId: number, cell: TableDay) => {
+        if (!cell.editable) return;
+
         setEditCell({workerId, day: cell})
     }
 
     const handleEditCell = async (value: string) => {
         if (!editCell) {
             console.warn("Нет изменяемого значения");
+            return;
+        }
+        
+        const MAX_VALUE = 24;
+        if (!value || +value > MAX_VALUE) {
+            setEditCell(undefined)
             return;
         }
 

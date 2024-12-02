@@ -207,7 +207,7 @@ export const ReportCardPage = () => {
                         value={selectedYear}
                         values={years.map((year) => ({label: year.toString(), value: year}))}
                         required={true}
-                        onChange={e => setSelectedYear(e.currentTarget.value)}
+                        onChange={e => setSelectedYear(+e.currentTarget.value)}
                     />
 
                     <DropDown
@@ -217,7 +217,7 @@ export const ReportCardPage = () => {
                         value={selectedMonth}
                         values={months.map((month, index) => ({label: month, value: index}))}
                         required={true}
-                        onChange={e => setSelectedMonth(e.currentTarget.value)}
+                        onChange={e => setSelectedMonth(+e.currentTarget.value)}
                     />
 
                     <BlueButton text="Скачать XLS" onClick={handleExportTable}></BlueButton>
