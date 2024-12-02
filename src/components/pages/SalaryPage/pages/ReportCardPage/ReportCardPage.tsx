@@ -81,13 +81,25 @@ const getMonthRange = (year: number, month: number) => {
 export const ReportCardPage = () => {
     const {getToken, authUser} = useAuthData();
 
+    const now = useMemo(() => new Date(), []);
+
     const years = [2024]
-    for (let year = years[0]; year < new Date().getFullYear(); year++) {
+    for (let year = years[0]; year < now.getFullYear(); year++) {
         years.push(year);
     }
 
     const [selectedYear, setSelectedYear] = useState(2024)
     const [selectedMonth, setSelectedMonth] = useState(() => new Date().getMonth())
+    
+    const yearDropdownItems = useMemo(() => years.map((year) => ({label: year.toString(), value: year})), [years])
+
+    const monthDropdownItems = useMemo(() => {
+        const availableYearMonths = now.getFullYear() === selectedYear ? now.getMonth() + 1 : months.length;
+        
+        return months
+            .slice(0, availableYearMonths)
+            .map((month, index) => ({label: month, value: index}))
+    }, [now, selectedYear])
 
     const [workers, setWorkers] = useState<IWorkerData[]>([])
     const [reportCardItems, setReportCardItems] = useState<ReportCardItem[]>([]);
@@ -156,7 +168,7 @@ export const ReportCardPage = () => {
     }
 
     const [table, setTable] = useState<Table>()
-    
+
     const handleUpdateTable = useCallback((table: Table) => {
         setTable(table)
     }, [])
@@ -205,7 +217,7 @@ export const ReportCardPage = () => {
                         id="entity"
                         placeholder="Год"
                         value={selectedYear}
-                        values={years.map((year) => ({label: year.toString(), value: year}))}
+                        values={yearDropdownItems}
                         required={true}
                         onChange={e => setSelectedYear(+e.currentTarget.value)}
                     />
@@ -215,7 +227,7 @@ export const ReportCardPage = () => {
                         id="entity"
                         placeholder="Месяц"
                         value={selectedMonth}
-                        values={months.map((month, index) => ({label: month, value: index}))}
+                        values={monthDropdownItems}
                         required={true}
                         onChange={e => setSelectedMonth(+e.currentTarget.value)}
                     />
