@@ -1,13 +1,13 @@
 import React from 'react';
 import style from "./App.module.scss"
-import {Route, Routes, useLocation} from "react-router-dom";
+import {Navigate, Route, Routes, useLocation} from "react-router-dom";
 import {
     CHANGE_PASSWORD,
     DOCUMENTS_PAGE,
     LOGIN_PAGE,
     MAIN_PAGE, NEW_PASSWORD,
-    REGISTRATION_PAGE,
-    REQUISITES_PAGE,
+    REGISTRATION_PAGE, REPORT_CARD_PAGE,
+    REQUISITES_PAGE, SALARY_PAGE, SALARY_STATEMENTS_PAGE,
     STAFF_PAGE, WORKER_DOCUMENTS_PAGE, WORKER_INFO_PAGE, WORKER_REQUISITES_PAGE
 } from "./consts/pageConsts";
 import Login from "./components/pages/Login/Login";
@@ -19,6 +19,10 @@ import RequireAuth from "@auth-kit/react-router/RequireAuth";
 import WorkerPage from "./components/pages/WorkerPages/WorkerPage";
 import WorkerDocumentsPage from "./components/pages/WorkerPages/WorkerDocumentsPage";
 import WorkerRequisitesPage from "./components/pages/WorkerPages/WorkerRequisitesPage";
+import DocumentsPage from "./components/pages/DocumentsPage/DocumentsPage";
+import {SalaryPage} from "./components/pages/SalaryPage/SalaryPage";
+import {ReportCardPage} from "./components/pages/SalaryPage/pages/ReportCardPage/ReportCardPage";
+import {StatementsPage} from "./components/pages/SalaryPage/pages/StatementsPage/StatementsPage";
 
 function App() {
     return (
@@ -35,7 +39,7 @@ function App() {
                     }></Route>
                     <Route path={STAFF_PAGE} element={
                         <RequireAuth fallbackPath={LOGIN_PAGE}>
-                            <StaffPage />
+                            <StaffPage/>
                         </RequireAuth>
                     }></Route>
                     <Route path={DOCUMENTS_PAGE} element={
@@ -57,17 +61,17 @@ function App() {
                     }></Route>
                     <Route path={WORKER_INFO_PAGE} element={
                         <RequireAuth fallbackPath={LOGIN_PAGE}>
-                            <WorkerPage />
+                            <WorkerPage/>
                         </RequireAuth>
                     }></Route>
                     <Route path={WORKER_DOCUMENTS_PAGE} element={
                         <RequireAuth fallbackPath={LOGIN_PAGE}>
-                            <WorkerDocumentsPage />
+                            <WorkerDocumentsPage/>
                         </RequireAuth>
                     }></Route>
                     <Route path={WORKER_REQUISITES_PAGE} element={
                         <RequireAuth fallbackPath={LOGIN_PAGE}>
-                            <WorkerRequisitesPage />
+                            <WorkerRequisitesPage/>
                         </RequireAuth>
                     }></Route>
                 </Routes>

@@ -1,0 +1,76 @@
+.tableContainer {
+  position: relative;
+  overflow: auto;
+}
+
+.tableLoader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  background-color: #fff;
+  opacity: 0.75;
+}
+
+.table {
+  border-spacing: 0;
+}
+
+.tableCell {
+  padding: 10px 16px;
+  background-color: #fff;
+  border: 1px solid #efefef;
+}
+
+.tableDayCell {
+  text-transform: capitalize;
+  min-width: 80px;
+  text-align: center;
+}
+
+.tableDayCellEditable {
+  position: relative;
+  cursor: pointer;
+
+  &:focus {
+    border: 1px solid #000;
+  }
+}
+
+.tableDayCellInput {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  -moz-appearance: textfield;
+
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+}
+
+.tableDayCellWeekend {
+  background-color: #fdbdba;
+}
+
+.tableNameCell {
+  position: sticky;
+  z-index: 1;
+  left: 0;
+  min-width: 320px;
+  max-width: 320px;
+  text-align: left;
+}
+
+.tableTotalCell {
+  position: sticky;
+  right: 0;
+  min-width: 100px;
+}

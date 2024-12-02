@@ -103,7 +103,7 @@ const StaffPage = () => {
                         name="staffFile"
                         onChange={(event) =>
                             setFileData({
-                                fileData: event.target.files[0],
+                                fileData: event.target.files![0],
                                 file: event.target.value
                             })
                         }
