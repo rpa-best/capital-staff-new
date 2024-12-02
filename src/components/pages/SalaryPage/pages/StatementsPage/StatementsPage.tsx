@@ -2,7 +2,7 @@ import scss from "./StatementsPage.module.scss";
 import Input from "../../../../comps/Input/Input";
 import BlueButton from "../../../../comps/BlueButton/BlueButton";
 import {FileTable} from "../../../DocumentsPage/documents/FileTable/FileTable";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import axios from "axios";
 import useAuthData from "../../../../../hooks/useAuthData";
 import FileIcon from "../../../../../assets/fileIcon.png";
@@ -42,12 +42,25 @@ export const StatementsPage = () => {
     const [documents, setDocuments] = useState<Document[]>([]);
 
     useEffect(() => {
-        getDocuments(authUser!.company.inn, getToken!).then(setDocuments);
+        getDocuments(authUser!.company.inn, getToken!).then((documents) => {
+                const reversedDocs = [...documents];
+                reversedDocs.reverse()
+            
+                setDocuments(reversedDocs)
+            }
+        );
     }, [])
+    
+    const formattedDocuments = useMemo(() => {
+        return documents.map(doc => ({url: doc.file, date: doc.date}))
+    }, [documents])
 
     const handleUploadDocument = async () => {
         if (file) {
-            await uploadDocument(authUser!.company.inn, file, getToken!)
+            const uploadedDoc = await uploadDocument(authUser!.company.inn, file, getToken!)
+            setDocuments([uploadedDoc, ...documents])
+            
+            setFile(undefined)
         }
     }
 
@@ -75,7 +88,7 @@ export const StatementsPage = () => {
                 </div>
             </div>
 
-            <FileTable files={documents.map(doc => ({url: doc.file, date: doc.date}))}/>
+            <FileTable files={formattedDocuments}/>
         </>
     )
 }
