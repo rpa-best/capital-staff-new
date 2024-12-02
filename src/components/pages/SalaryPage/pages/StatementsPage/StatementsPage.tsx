@@ -70,7 +70,7 @@ export const StatementsPage = () => {
                 <h2>Зарплатные ведомости</h2>
             </div>
 
-            <a className={scss.exampleDocLink} href='#'>
+            <a className={scss.exampleDocLink} href='/assets/Табель%20образец.xlsx'>
                 <img width={60} height={60} src={FileIcon} alt="doc_example"/>
                 Скачать образец ведомости для заполнения
             </a>
