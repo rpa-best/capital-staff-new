@@ -9,6 +9,7 @@ import {months, parseDate} from "../../../utils/date";
 import {Column, Table} from "../../comps/Table/Table";
 import FileIcon from "../../../assets/fileIcon.png";
 import {Vortex} from "react-loader-spinner";
+import {useUser} from "../../../store/UserState";
 
 interface DocumentType {
     id: number;
@@ -50,6 +51,7 @@ const getDocuments = async (inn: string, token: string) => {
 
 const DocumentsPage = () => {
     const {getToken, authUser} = useAuthData();
+    const { selectedCompany } = useUser()
 
     const [documentTypes, setDocumentTypes] = useState<DocumentType[]>([])
     const [documents, setDocuments] = useState<Document[]>([])
@@ -61,13 +63,15 @@ const DocumentsPage = () => {
     const [selectedOrganizationId, setSelectedOrganizationId] = useState<string>()
 
     useEffect(() => {
+        if (!selectedCompany) return;
+        setIsDocumentsLoading(true)
+        
         getDocumentTypes(getToken!).then(setDocumentTypes);
-
-        getDocuments(authUser!.company.inn, getToken!).then((value) => {
+        getDocuments(selectedCompany.inn!, getToken!).then((value) => {
             setIsDocumentsLoading(false)
             setDocuments(value)
         })
-    }, [])
+    }, [getToken, selectedCompany])
 
     const documentTypeOptions = useMemo(() => {
         return documentTypes.map(type => ({value: type.id, label: type.name}));
@@ -183,15 +187,6 @@ const DocumentsPage = () => {
                         values={documentTypeOptions}
                         onChange={(event) => {
                             setSelectedDocumentTypeId(+event.target.value < 0 ? undefined : +event.target.value)
-                        }}
-                    />
-                    <DropDown
-                        name="organization"
-                        id="organization"
-                        placeholder="Организация"
-                        values={organizationOptions}
-                        onChange={(event) => {
-                            setSelectedOrganizationId(+event.target.value < 0 ? undefined : event.target.value)
                         }}
                     />
                     <DropDown

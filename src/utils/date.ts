@@ -22,7 +22,6 @@ export const getDashedDateString = (date: Date) => {
 }
 
 export const parseDate = (date: string) => {
-    console.log(date)
     if (!/^\d{2}\.\d{2}\.\d{4}$/.test(date)) {
         throw new Error("Неверный формат даты");
     }

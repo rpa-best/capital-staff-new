@@ -6,6 +6,7 @@ import axios from "axios";
 import useAuthData from "../../../../../hooks/useAuthData";
 import FileIcon from "../../../../../assets/fileIcon.png";
 import {Column, Table} from "../../../../comps/Table/Table";
+import {useUser} from "../../../../../store/UserState";
 
 interface Document {
     id: number;
@@ -40,20 +41,25 @@ export const StatementsPage = () => {
     const {getToken, authUser} = useAuthData();
     const [file, setFile] = useState<File>()
     const [documents, setDocuments] = useState<Document[]>([]);
+    const { selectedCompany } = useUser()
 
     useEffect(() => {
-        getDocuments(authUser!.company.inn, getToken!).then((documents) => {
+        if (!selectedCompany) return;
+        
+        getDocuments(selectedCompany.inn!, getToken!).then((documents) => {
                 const reversedDocs = [...documents];
                 reversedDocs.reverse()
             
                 setDocuments(reversedDocs)
             }
         );
-    }, [])
+    }, [selectedCompany])
 
     const handleUploadDocument = async () => {
+        if (!selectedCompany) return
+        
         if (file) {
-            const uploadedDoc = await uploadDocument(authUser!.company.inn, file, getToken!)
+            const uploadedDoc = await uploadDocument(selectedCompany.inn!, file, getToken!)
             setDocuments([uploadedDoc, ...documents])
             
             setFile(undefined)

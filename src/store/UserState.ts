@@ -2,6 +2,7 @@ import {create} from "zustand";
 import {createJSONStorage, devtools, persist} from "zustand/middleware";
 import axios from "axios";
 import toast from "react-hot-toast";
+import {ICompany} from "../components/views/CompanyCard/CompanyCard";
 
 const errorMessage = (message: string) => toast.error(message)
 
@@ -14,7 +15,10 @@ interface IUserState {
     rememberMe: boolean,
     loading: boolean,
     myCompany: null,
-    myCompanies: [],
+    myCompanies: ICompany[],
+    selectedCompany: ICompany | null,
+    setSelectedCompany: (company?: ICompany) => void,
+    loadMyCompanies: (token: string) => Promise<void>,
     login: (email: string, password: string) => Promise<void>,
     unLogin: () => Promise<void>,
     changeStorage: () => Promise<void>,
@@ -31,6 +35,7 @@ export const useUser = create<IUserState>()(devtools(persist((set, get) => ({
     loading: false,
     myCompany: null,
     myCompanies: [],
+    selectedCompany: null,
     login: async (email, password) => {
         set({loading: true})
 
@@ -152,6 +157,32 @@ export const useUser = create<IUserState>()(devtools(persist((set, get) => ({
     },
     changeStorage: async () => {
         set({rememberMe: !get().rememberMe})
+    },
+    setSelectedCompany: (company?: ICompany) => {
+        set({selectedCompany: company})
+    },
+    loadMyCompanies: async (token: string) => {
+        try {
+            set({
+                loading: true
+            })
+
+            const response = await axios.get<ICompany[]>(`${process.env.REACT_APP_BASE_URL}/api/organization/org/`, {
+                headers: {
+                    Authorization: token
+                }
+            })
+            
+            set({
+                myCompanies: response.data
+            })
+        } catch (error) {
+            errorMessage("Что-то пошло не так!")
+        } finally {
+            set({
+                loading: false
+            })
+        }
     }
 }), {
     name: 'user-storage',

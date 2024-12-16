@@ -1,16 +1,40 @@
-import React from 'react';
+import React, {useEffect, useMemo} from 'react';
 import scss from './Header.module.scss'
 import {NavLink} from "react-router-dom";
 import RubleCoin from "../../../assets/coin.png"
 import Line from "../../../assets/line.svg"
 import {DOCUMENTS_PAGE, REQUISITES_PAGE, SALARY_PAGE, STAFF_PAGE} from "../../../consts/pageConsts";
 import ExitButton from "../../comps/ExitButton/ExitButton";
+import useAuthData from "../../../hooks/useAuthData";
+import {useUser} from "../../../store/UserState";
+import DropDown from "../../comps/DropDown/DropDown";
 
 
 interface IHeader {
     companyName?: string
 }
 const Header = ({companyName}: IHeader) => {
+    const {getToken} = useAuthData();
+    const { myCompanies, loadMyCompanies, selectedCompany, setSelectedCompany } = useUser()
+    const companyOptions = useMemo(() => {
+        return myCompanies.map(company => ({
+            label: company.name!,
+            value: company.inn!
+        }))
+    }, [myCompanies])
+    
+    useEffect(() => {
+        if (!myCompanies.length) {
+            loadMyCompanies(getToken!).then(() => {
+                setSelectedCompany(myCompanies[0])
+            })
+        }
+    }, [myCompanies, loadMyCompanies, getToken, setSelectedCompany]);
+    
+    const handleSelectCompany = (inn: string) => {
+        setSelectedCompany(myCompanies.find(company => company.inn === inn))
+    }
+    
     return (
         <React.Fragment>
             <div className={scss.headerContainer}>
@@ -26,7 +50,15 @@ const Header = ({companyName}: IHeader) => {
                     </div>
                 </div>
                 <div className={scss.company}>
-                    {companyName || 'Неизвестная компания'}
+                    <DropDown
+                        name="entity"
+                        id="entity"
+                        placeholder="Организация"
+                        value={selectedCompany?.inn}
+                        values={companyOptions}
+                        required
+                        onChange={(event) => handleSelectCompany(event.target.value)}
+                    />
                 </div>
                 <div className={scss.button}>
                     <ExitButton text={"Выйти"}></ExitButton>

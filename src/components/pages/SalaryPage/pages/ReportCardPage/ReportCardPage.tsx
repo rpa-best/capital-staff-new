@@ -11,6 +11,7 @@ import {getDashedDateString, months} from "../../../../../utils/date";
 import {Vortex} from "react-loader-spinner";
 import BlueButton from "../../../../comps/BlueButton/BlueButton";
 import {utils as xlsxUtils, writeFile as xlsxWriteFile} from 'xlsx'
+import {useUser} from "../../../../../store/UserState";
 
 export interface ReportCardItem {
     id: number;
@@ -75,6 +76,7 @@ const getMonthRange = (year: number, month: number) => {
 
 export const ReportCardPage = () => {
     const {getToken, authUser} = useAuthData();
+    const { selectedCompany } = useUser()
 
     const now = useMemo(() => new Date(), []);
 
@@ -107,33 +109,41 @@ export const ReportCardPage = () => {
     }));
 
     const loadReportCardItems = useCallback(async () => {
+        if (!selectedCompany) return;
+        
         const {startDate, endDate} = getMonthRange(selectedYear, selectedMonth)
-
+        
         setIsLoadingReportCardItems(true)
         try {
             setReportCardItems((await getReportCardItems(
-                authUser!.company.inn,
+                selectedCompany.inn!,
                 getToken!,
                 getDashedDateString(startDate),
                 getDashedDateString(endDate)
             )).data);
+            
         } catch (e) {
             toast.error("Ошибка при загрузке табеля")
         }
         setIsLoadingReportCardItems(false)
     }, [authUser, getToken, selectedMonth, selectedYear])
-
+    
     useEffect(() => {
+        if (!selectedCompany) return;
+        
         setIsLoadingWorkers(true)
-        getNewDataForTable(getToken!).then((items) => {
+        
+        getNewDataForTable(getToken!, undefined, selectedCompany.inn!).then((items) => {
             setWorkers(items)
             setIsLoadingWorkers(false)
         })
-    }, [getNewDataForTable, getToken]);
+    }, [selectedCompany, getNewDataForTable, getToken]);
 
     useEffect(() => {
+        if (!selectedCompany) return;
+        
         loadReportCardItems().then()
-    }, [loadReportCardItems, selectedYear, selectedMonth]);
+    }, [selectedCompany, loadReportCardItems, selectedYear, selectedMonth]);
 
     const formattedWorkers = useMemo<{ id: number, name: string }[]>(() => {
         return workers.map(worker => ({

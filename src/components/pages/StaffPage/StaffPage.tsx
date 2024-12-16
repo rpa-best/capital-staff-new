@@ -10,19 +10,15 @@ import { documentTypes } from "./consts";
 import Header from "../../views/Header/Header";
 import toast from "react-hot-toast";
 import useAuthData from "../../../hooks/useAuthData";
-
-interface IDropDownCompany {
-    value: string;
-    label: string;
-}
+import {useUser} from "../../../store/UserState";
 
 const errorMessage = (message: string) => toast.error(message)
 
 const StaffPage = () => {
     const { getToken, authUser } = useAuthData();
     const [fileData, setFileData] = useState<{ fileData: any; file: any }>({ file: null, fileData: null });
-    const [companies, setCompanies] = useState<IDropDownCompany[]>([]);
     const [tableData, setTableData] = useState<IWorkerData[]>([]);
+    const { selectedCompany } = useUser()
     const { getFile, uploadFile, loading, getCompanies, getNewDataForTable } = useStaff((state) => ({
         getFile: state.useGetFile,
         uploadFile: state.useAddStaff,
@@ -32,22 +28,14 @@ const StaffPage = () => {
     }));
 
     useEffect(() => {
-        getCompanies(getToken, authUser).then((data) => {
-            const formattedCompanies = data.map((company) => ({
-                value: company.inn as string,
-                label: company.name as string
-            }));
-            setCompanies(formattedCompanies);
-        }).catch(() => {
-            errorMessage('Не удалось обновить компании!')
-        })
-
-        getNewDataForTable(getToken).then((data) => {
+        if (!selectedCompany) return;
+        
+        getNewDataForTable(getToken, undefined, selectedCompany.inn!).then((data) => {
             setTableData(data)
         }).catch(() => {
             errorMessage('Не удалось обновить сотрудников')
         })
-    }, []);
+    }, [selectedCompany]);
 
     return (
         <div className={scss.staffContainer}>
@@ -55,15 +43,6 @@ const StaffPage = () => {
             <div className={scss.headContainer}>
                 <h1>Сотрудники компании</h1>
                 <div className={scss.dropDownContainer}>
-                    <div className={scss.dropDown}>
-                        <DropDown
-                            name="entity"
-                            id="entity"
-                            placeholder="Юр.лицо заказчика"
-                            values={companies}
-                            onChange={(param) => {}}
-                        />
-                    </div>
                     <div className={scss.dropDown}>
                         <DropDown
                             name="documents"
