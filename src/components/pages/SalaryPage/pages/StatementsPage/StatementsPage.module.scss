@@ -23,3 +23,23 @@
   width: 369px;
   margin-bottom: 24px;
 }
+
+.dateColumn {
+  text-align: end;
+}
+
+.fileColumn {
+  text-align: start;
+}
+
+.fileCellValue {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: black;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

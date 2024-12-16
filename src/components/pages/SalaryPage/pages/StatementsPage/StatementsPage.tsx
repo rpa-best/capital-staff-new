@@ -1,11 +1,11 @@
 import scss from "./StatementsPage.module.scss";
 import Input from "../../../../comps/Input/Input";
 import BlueButton from "../../../../comps/BlueButton/BlueButton";
-import {FileTable} from "../../../DocumentsPage/documents/FileTable/FileTable";
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
 import useAuthData from "../../../../../hooks/useAuthData";
 import FileIcon from "../../../../../assets/fileIcon.png";
+import {Column, Table} from "../../../../comps/Table/Table";
 
 interface Document {
     id: number;
@@ -50,10 +50,6 @@ export const StatementsPage = () => {
             }
         );
     }, [])
-    
-    const formattedDocuments = useMemo(() => {
-        return documents.map(doc => ({url: doc.file, date: doc.date}))
-    }, [documents])
 
     const handleUploadDocument = async () => {
         if (file) {
@@ -63,6 +59,25 @@ export const StatementsPage = () => {
             setFile(undefined)
         }
     }
+    
+    const columns: Column<Document>[] = [
+        {
+            header: "Документ", 
+            key: 'file',
+            className: scss.fileColumn,
+            render: (value, row) => (
+                <a className={scss.fileCellValue} href={`${value}`}>
+                    <img width={40} height={40} src={FileIcon} alt="icon"/>
+                    {decodeURI(value.toString().split("/").at(-1)!)}
+                </a>
+            )
+        },
+        {
+            header: "Дата",
+            key: 'date',
+            className: scss.dateColumn,
+        }
+    ]
 
     return (
         <>
@@ -88,7 +103,7 @@ export const StatementsPage = () => {
                 </div>
             </div>
 
-            <FileTable files={formattedDocuments}/>
+            <Table data={documents} columns={columns}></Table>
         </>
     )
 }
