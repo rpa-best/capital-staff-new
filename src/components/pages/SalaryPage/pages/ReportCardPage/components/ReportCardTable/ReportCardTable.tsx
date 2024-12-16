@@ -3,7 +3,7 @@ import {ReportCardItem} from "../../ReportCardPage";
 import React, {FC, FocusEvent, KeyboardEvent, useEffect, useMemo, useState} from "react";
 import cn from "classnames";
 import {Day, EditCellData, ReportCardWorker, Table, TableDay, TableHeader, TableRow} from "./ReportCardTable.types";
-import {getDashedDateString} from "../../../../../../../utils/date";
+import {getDashedDateString, parseDate} from "../../../../../../../utils/date";
 
 interface ReportCardTableProps {
     year: number;
@@ -46,7 +46,7 @@ export const ReportCardTable: FC<ReportCardTableProps> = ({
 
         for (let cell of reportCardItems) {
             if (!tableMap.has(cell.worker)) tableMap.set(cell.worker, new Map());
-            tableMap.get(cell.worker)!.set(cell.date, cell);
+            tableMap.get(cell.worker)!.set(getDashedDateString(parseDate(cell.date)), cell);
         }
 
         const monthDays = getMonthDays(month, year);

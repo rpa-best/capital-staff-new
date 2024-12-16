@@ -20,3 +20,13 @@ export const getDashedDateString = (date: Date) => {
 
     return `${year}-${month}-${day}`;
 }
+
+export const parseDate = (date: string) => {
+    console.log(date)
+    if (!/^\d{2}\.\d{2}\.\d{4}$/.test(date)) {
+        throw new Error("Неверный формат даты");
+    }
+    
+    const [day, month, year] = date.split('.').map(Number);
+    return new Date(year, month - 1, day);
+}

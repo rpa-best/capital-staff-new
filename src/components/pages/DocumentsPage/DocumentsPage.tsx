@@ -5,7 +5,7 @@ import React, {useEffect, useMemo, useState} from "react";
 import axios from "axios";
 import {ICompany} from "../../views/CompanyCard/CompanyCard";
 import DropDown from "../../comps/DropDown/DropDown";
-import {months} from "../../../utils/date";
+import {months, parseDate} from "../../../utils/date";
 import {Column, Table} from "../../comps/Table/Table";
 import FileIcon from "../../../assets/fileIcon.png";
 import {Vortex} from "react-loader-spinner";
@@ -84,7 +84,7 @@ const DocumentsPage = () => {
     }, [documents])
 
     const yearOptions = useMemo(() => {
-        const dates = documents.map(document => new Date(document.date))
+        const dates = documents.map(document => parseDate(document.date))
         const uniqueYears = [...new Set(dates.map(date => date.getFullYear()))]
 
         return uniqueYears.map(year => ({value: year, label: year.toString()}))
@@ -113,7 +113,7 @@ const DocumentsPage = () => {
         const groups = new Map<string, Document[]>()
 
         for (let document of filteredDocuments) {
-            const documentDate = new Date(document.date)
+            const documentDate = parseDate(document.date)
             const key = `${documentDate.getFullYear()}-${documentDate.getMonth()}`
 
             if (!groups.has(key)) {
