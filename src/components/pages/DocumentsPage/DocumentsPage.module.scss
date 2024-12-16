@@ -18,14 +18,54 @@
   }
 }
 
-.inputFile {
-  border: none;
+.loader {
+  display: flex;
+  justify-content: center;
 }
 
-.uploadFile {
+.documentsGroup {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  width: 369px;
-  margin-bottom: 24px;
+  gap: 12px;
+}
+
+.documentsGroupTitle {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.headerFilters {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.centeredColumn {
+  text-align: center;
+}
+
+.fileTypeCellValue {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 120px;
+}
+
+.fileColumn {
+  text-align: start;
+  
+  & > a {
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
