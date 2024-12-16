@@ -11,14 +11,6 @@ import {WORKER_INFO_PAGE} from "../../../consts/pageConsts";
 import {useWorker} from "../../../store/WorkerState";
 import useAuthData from "../../../hooks/useAuthData";
 
-function changeDate(dateStr: string) {
-    if (!dateStr) {
-        return '-'
-    }
-    let [year, month, day] = dateStr.split('-');
-    return `${day}-${month}-${year}`;
-}
-
 interface IStaffTable {
     tableData: IWorkerData[],
     loading?: boolean
@@ -63,22 +55,22 @@ const StaffTable = ({tableData, loading}: IStaffTable) => {
             item.docs?.forEach(doc => {
                 switch (doc.type.slug) {
                     case 'check_do':
-                        tempData.check_do = changeDate(doc.expired_date as string)
+                        tempData.check_do = doc.expired_date ?? '-'
                         break
                     case 'polis_dms_do':
-                        tempData.polis_dms_do = changeDate(doc.expired_date as string)
+                        tempData.polis_dms_do = doc.expired_date ?? '-'
                         break
                     case 'projivanie_do':
-                        tempData.projivanie_do = changeDate(doc.expired_date as string)
+                        tempData.projivanie_do = doc.expired_date ?? '-'
                         break
                     case 'jitelstvo_o':
-                        tempData.jitelstvo_o = changeDate(doc.expired_date as string)
+                        tempData.jitelstvo_o = doc.expired_date ?? '-'
                         break
                     case 'potent_do':
-                        tempData.potent_do = changeDate(doc.expired_date as string)
+                        tempData.potent_do = doc.expired_date ?? '-'
                         break
                     case 'polis_oms_do':
-                        tempData.polis_oms_do = changeDate(doc.expired_date as string)
+                        tempData.polis_oms_do = doc.expired_date ?? '-'
                         break
                     default:
                         break
