@@ -7,7 +7,7 @@ import {IWorkerData, useStaff} from "../../../../../store/StaffState";
 import {EditCellData, Table} from "./components/ReportCardTable/ReportCardTable.types";
 import {ReportCardTable} from "./components/ReportCardTable/ReportCardTable";
 import toast from "react-hot-toast";
-import {getDashedDateString} from "../../../../../utils/date";
+import {getDashedDateString, months} from "../../../../../utils/date";
 import {Vortex} from "react-loader-spinner";
 import BlueButton from "../../../../comps/BlueButton/BlueButton";
 import {utils as xlsxUtils, writeFile as xlsxWriteFile} from 'xlsx'
@@ -65,21 +65,6 @@ const updateTableCell = async (inn: string, token: string, id: number, body: Upd
 
     return response.data;
 }
-
-const months = [
-    "Январь",
-    "Февраль",
-    "Март",
-    "Апрель",
-    "Май",
-    "Июнь",
-    "Июль",
-    "Август",
-    "Сентябрь",
-    "Октябрь",
-    "Ноябрь",
-    "Декабрь",
-]
 
 const getMonthRange = (year: number, month: number) => {
     const startDate = new Date(year, month, 1);
