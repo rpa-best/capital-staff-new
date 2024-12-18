@@ -126,7 +126,7 @@ export const ReportCardPage = () => {
             toast.error("Ошибка при загрузке табеля")
         }
         setIsLoadingReportCardItems(false)
-    }, [authUser, getToken, selectedMonth, selectedYear])
+    }, [selectedCompany, getToken, selectedMonth, selectedYear])
     
     useEffect(() => {
         if (!selectedCompany) return;
@@ -153,6 +153,8 @@ export const ReportCardPage = () => {
     }, [workers])
 
     const handleEditCell = async (value: EditCellData) => {
+        if (!selectedCompany) return;
+        
         try {
             const cellData = {
                 date: value.date,
@@ -161,10 +163,10 @@ export const ReportCardPage = () => {
             };
 
             if (!value.id) {
-                const createdCell = await createTableCell(authUser!.company.inn, getToken!, cellData)
+                const createdCell = await createTableCell(selectedCompany.inn!, getToken!, cellData)
                 setReportCardItems([...reportCardItems, createdCell])
             } else {
-                const updatedCell = await updateTableCell(authUser!.company.inn, getToken!, value.id, cellData)
+                const updatedCell = await updateTableCell(selectedCompany.inn!, getToken!, value.id, cellData)
                 setReportCardItems([...reportCardItems.filter(cell => cell.id !== updatedCell.id), updatedCell])
             }
         } catch (e) {
