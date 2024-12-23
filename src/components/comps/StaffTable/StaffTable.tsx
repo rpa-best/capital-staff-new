@@ -35,49 +35,49 @@ const StaffTable = ({tableData, loading}: IStaffTable) => {
         loadingOoo: 'Загрузка...',
         loadingError: 'Ошибка загрузки...',
     }
-
-    const authUser = useAuthUser<IAuthUser>()
+    
     const preparedData: any[] = []
+    
     tableData.forEach(item => {
-        if (item.id !== authUser?.id) {
-            const tempData = {
-                id: item.id,
-                last_name: item.last_name,
-                surname: item.surname,
-                first_name: item.first_name,
-                check_do: '-',
-                polis_dms_do: '-',
-                projivanie_do: '-',
-                jitelstvo_o: '-',
-                potent_do: '-',
-                polis_oms_do: '-',
-            }
-            item.docs?.forEach(doc => {
-                switch (doc.type.slug) {
-                    case 'check_do':
-                        tempData.check_do = doc.expired_date ?? '-'
-                        break
-                    case 'polis_dms_do':
-                        tempData.polis_dms_do = doc.expired_date ?? '-'
-                        break
-                    case 'projivanie_do':
-                        tempData.projivanie_do = doc.expired_date ?? '-'
-                        break
-                    case 'jitelstvo_o':
-                        tempData.jitelstvo_o = doc.expired_date ?? '-'
-                        break
-                    case 'potent_do':
-                        tempData.potent_do = doc.expired_date ?? '-'
-                        break
-                    case 'polis_oms_do':
-                        tempData.polis_oms_do = doc.expired_date ?? '-'
-                        break
-                    default:
-                        break
-                }
-            })
-            preparedData.push(tempData)
+        const tempData = {
+            id: item.id,
+            last_name: item.last_name,
+            surname: item.surname,
+            first_name: item.first_name,
+            check_do: '-',
+            polis_dms_do: '-',
+            projivanie_do: '-',
+            jitelstvo_o: '-',
+            potent_do: '-',
+            polis_oms_do: '-',
         }
+            
+        item.docs?.forEach(doc => {
+            switch (doc.type.slug) {
+                case 'check_do':
+                    tempData.check_do = doc.expired_date ?? '-'
+                    break
+                case 'polis_dms_do':
+                    tempData.polis_dms_do = doc.expired_date ?? '-'
+                    break
+                case 'projivanie_do':
+                    tempData.projivanie_do = doc.expired_date ?? '-'
+                    break
+                case 'jitelstvo_o':
+                    tempData.jitelstvo_o = doc.expired_date ?? '-'
+                    break
+                case 'potent_do':
+                    tempData.potent_do = doc.expired_date ?? '-'
+                    break
+                case 'polis_oms_do':
+                    tempData.polis_oms_do = doc.expired_date ?? '-'
+                    break
+                default:
+                    break
+            }
+        })
+
+        preparedData.push(tempData)
     })
 
     const colDefs = [
@@ -96,9 +96,7 @@ const StaffTable = ({tableData, loading}: IStaffTable) => {
         overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Загрузка данных...</span>',
         overlayNoRowsTemplate: '<span class="ag-overlay-no-rows-center">Нет информации о сотрудниках</span>'
     };
-
-    console.log(preparedData)
-
+    
     return (
         <React.Fragment>
             <React.StrictMode>

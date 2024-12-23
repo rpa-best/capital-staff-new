@@ -6,7 +6,6 @@ import Modal from "../../views/Modal/Modal";
 import Input from "../../comps/Input/Input";
 import CustomAutocomplete from "../../comps/AutoComplete/AutoComplete";
 import {Vortex} from "react-loader-spinner";
-import Header from "../../views/Header/Header";
 import useAuthData from "../../../hooks/useAuthData";
 import {ICompanyWithStatus, useCompanies} from "../../../store/CompanyState";
 
@@ -31,7 +30,7 @@ const RequisitesPage = () => {
         setUpdateCompany({...company})
     }
 
-    const getOptionLabel = (option: {inn?: string | null, name?: string | null}) => {
+    const getOptionLabel = (option: { inn?: string | null, name?: string | null }) => {
         if (option?.inn && option?.name) {
             return `${option?.inn || 'null'} ${option?.name || 'null'}`
         } else {
@@ -113,29 +112,31 @@ const RequisitesPage = () => {
 
     return (
         <React.Fragment>
-            <div className={scss.requisitesContainer}>
-                <Header companyName={authUser?.company.name}/>
-                <div className={scss.headContainer}>
-                    <div className={scss.topBar}>
-                        <h1 className={scss.title}>Реквизиты компаний</h1>
-                        <div>
-                            <WhiteButton text={"Добавить компанию"} onClick={() => setAddCompanyModal(true)}/>
-                        </div>
+            <div className={scss.headContainer}>
+                <div className={scss.topBar}>
+                    <h1 className={scss.title}>Реквизиты компаний</h1>
+                    <div>
+                        <WhiteButton text={"Добавить компанию"} onClick={() => setAddCompanyModal(true)}/>
                     </div>
                 </div>
-                <div className={scss.cards}>
-                    {
-                        companies?.map((company) => {
-                            return <CompanyCard key={company.id} company={company.org} setCompany={setCompanyForUpdate} changeActive={setUpdateCompanyModal} status={company.status} />
-                        })
-                    }
-                </div>
             </div>
-            <Modal active={addCompanyModal} loading={loading} setActive={setAddCompanyModal} header={"Добавить компанию"}
+            
+            <div className={scss.cards}>
+                {
+                    companies?.map((company) => {
+                        return <CompanyCard key={company.id} company={company.org} setCompany={setCompanyForUpdate}
+                                            changeActive={setUpdateCompanyModal} status={company.status}/>
+                    })
+                }
+            </div>
+
+            <Modal active={addCompanyModal} loading={loading} setActive={setAddCompanyModal}
+                   header={"Добавить компанию"}
                    onClick={() => handleAddCompany()}>
                 <div className={scss.modalDiv}>
                     <CustomAutocomplete label={'ИНН'} placeholder={'0000000000'} onInputChange={setTempINN}
-                                        onChange={setCompanyForAdd} value={addCompany?.inn ?? null} options={tempCompanies}
+                                        onChange={setCompanyForAdd} value={addCompany?.inn ?? null}
+                                        options={tempCompanies}
                                         getOptionLabel={getOptionLabel}/>
                 </div>
                 <div className={scss.modalFields}>
@@ -178,6 +179,7 @@ const RequisitesPage = () => {
                     }} value={addCompany?.phone_name}/>
                 </div>
             </Modal>
+            
             <Modal active={updateCompanyModal} loading={loading} setActive={setUpdateCompanyModal}
                    header={"Внесите изменения в соответствующие поля"}
                    onClick={() => handleUpdateCompany()}>

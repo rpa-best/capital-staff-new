@@ -1,3 +1,24 @@
+* {
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #e7e6e6;
+}
+
+.container {
+    padding: 20px 40px;
+
+    @media (min-width: 1400px) {
+        padding-left: 10vw;
+        padding-right: 10vw;
+    }
+
+    @media (max-width: 500px) {
+        padding: 10px 20px;
+    }
+}
+
 ::-webkit-scrollbar {
     width: 0;
     height: 8px;

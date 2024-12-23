@@ -1,18 +1,15 @@
-.headerContainer {
+.layout {
+  background-color: #FFFFFF;
+}
+
+.header {
   display: flex;
-  flex-direction: row;
-  padding: 40px;
   align-items: center;
-  position: relative;
   width: 100%;
   min-height: 10vh;
   max-height: fit-content;
-  background-color: #FFFFFF;
-  margin-bottom: 10px;
 
-  @media (max-width: 600px) {
-    padding: 10px 5px 10px 5px;
-  }
+  margin-bottom: 10px;
 
   .coinImage {
     max-height: 40px;
@@ -87,12 +84,7 @@
 
 .links {
   display: flex;
-  flex-direction: row;
   justify-content: left;
-  padding-top: 10px;
-  margin-right: auto;
-  padding-left: 40px;
-  padding-bottom: 10px;
 
   @media (max-width: 800px) {
     justify-content: center;

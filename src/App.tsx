@@ -23,6 +23,7 @@ import DocumentsPage from "./components/pages/DocumentsPage/DocumentsPage";
 import {SalaryPage} from "./components/pages/SalaryPage/SalaryPage";
 import {ReportCardPage} from "./components/pages/SalaryPage/pages/ReportCardPage/ReportCardPage";
 import {StatementsPage} from "./components/pages/SalaryPage/pages/StatementsPage/StatementsPage";
+import {AuthorizedLayout} from "./components/layouts/AuthorizedLayout/AuthorizedLayout";
 
 function App() {
     return (
@@ -30,50 +31,36 @@ function App() {
             <div className={style.body}>
                 <Routes>
                     <Route path={LOGIN_PAGE} element={<Login/>}></Route>
-                    <Route path={MAIN_PAGE} element={<Login/>}></Route>
                     <Route path={REGISTRATION_PAGE} element={<RegistrationPage/>}></Route>
-                    <Route path={REQUISITES_PAGE} element={
-                        <RequireAuth fallbackPath={LOGIN_PAGE}>
-                            <RequisitesPage/>
-                        </RequireAuth>
-                    }></Route>
-                    <Route path={STAFF_PAGE} element={
-                        <RequireAuth fallbackPath={LOGIN_PAGE}>
-                            <StaffPage/>
-                        </RequireAuth>
-                    }></Route>
-                    <Route path={DOCUMENTS_PAGE} element={
-                        <RequireAuth fallbackPath={LOGIN_PAGE}>
-                            <DocumentsPage/>
-                        </RequireAuth>
-                    }></Route>
-                    <Route path={SALARY_PAGE}
-                           element={
-                               <RequireAuth fallbackPath={LOGIN_PAGE}>
-                                   <SalaryPage/>
-                               </RequireAuth>
-                           } children={
-                        <>
-                            <Route index element={<Navigate to={SALARY_STATEMENTS_PAGE} />} />
-                            <Route  path={SALARY_STATEMENTS_PAGE} element={<StatementsPage/>}/>
-                            <Route index path={REPORT_CARD_PAGE} element={<ReportCardPage/>}/>
-                        </>
-                    }></Route>
-                    <Route path={WORKER_INFO_PAGE} element={
-                        <RequireAuth fallbackPath={LOGIN_PAGE}>
-                            <WorkerPage/>
-                        </RequireAuth>
-                    }></Route>
-                    <Route path={WORKER_DOCUMENTS_PAGE} element={
-                        <RequireAuth fallbackPath={LOGIN_PAGE}>
-                            <WorkerDocumentsPage/>
-                        </RequireAuth>
-                    }></Route>
-                    <Route path={WORKER_REQUISITES_PAGE} element={
-                        <RequireAuth fallbackPath={LOGIN_PAGE}>
-                            <WorkerRequisitesPage/>
-                        </RequireAuth>
-                    }></Route>
+                    <Route
+                        path={"/"}
+                        element={
+                            <RequireAuth fallbackPath={LOGIN_PAGE}>
+                                <AuthorizedLayout/>
+                            </RequireAuth>
+                        }
+                        children={
+                            <>
+                                <Route path={REQUISITES_PAGE} element={<RequisitesPage/>}/>
+                                <Route path={STAFF_PAGE} element={<StaffPage/>}/>
+                                <Route path={WORKER_INFO_PAGE} element={<WorkerPage/>}/>
+                                <Route path={WORKER_DOCUMENTS_PAGE} element={<WorkerDocumentsPage/>}/>
+                                <Route path={DOCUMENTS_PAGE} element={<DocumentsPage/>}/>
+                                <Route path={WORKER_REQUISITES_PAGE} element={<WorkerRequisitesPage/>}/>
+                                <Route
+                                    path={SALARY_PAGE}
+                                    element={<SalaryPage/>}
+                                    children={
+                                        <>
+                                            <Route index element={<Navigate to={SALARY_STATEMENTS_PAGE}/>}/>
+                                            <Route path={SALARY_STATEMENTS_PAGE} element={<StatementsPage/>}/>
+                                            <Route index path={REPORT_CARD_PAGE} element={<ReportCardPage/>}/>
+                                        </>
+                                    }
+                                />
+                            </>
+                        }
+                    />
                 </Routes>
             </div>
             <Toaster/>

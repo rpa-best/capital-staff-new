@@ -6,7 +6,6 @@ import {WORKER_DOCUMENTS_PAGE, WORKER_INFO_PAGE, WORKER_REQUISITES_PAGE} from ".
 import Input from "../../comps/Input/Input";
 import BlueButton from "../../comps/BlueButton/BlueButton";
 import {useWorker} from "../../../store/WorkerState";
-import Header from "../../views/Header/Header";
 import useAuthData from "../../../hooks/useAuthData";
 const WorkerRequisitesPage = () => {
     const {getToken, authUser} = useAuthData()
@@ -39,19 +38,21 @@ const WorkerRequisitesPage = () => {
         )
     }
     return (
-        <div className={scss.workerContainer}>
-            <Header companyName={authUser?.company.name}/>
+        <>
             <div className={scss.workerName}>
                 <h1>{`${workerData?.first_name} ${workerData?.last_name} ${workerData?.surname}`}</h1>
             </div>
+            
             <div className={scss.links}>
                 <NavLink className={({isActive}) => isActive ? scss.active : scss.link} to={WORKER_INFO_PAGE}><b>Работа</b></NavLink>
                 <NavLink className={({isActive}) => isActive ? scss.active : scss.link} to={WORKER_REQUISITES_PAGE}><b>Реквизиты</b></NavLink>
                 <NavLink className={({isActive}) => isActive ? scss.active : scss.link} to={WORKER_DOCUMENTS_PAGE}><b>Документы</b></NavLink>
             </div>
+            
             <div className={scss.workPlaceTitle}>
                 <h2>Ваши данные</h2>
             </div>
+            
             <div className={scss.requisites}>
                 <div className={scss.row}>
                     <p className={scss.rowText}>Фамилия:</p>
@@ -77,7 +78,7 @@ const WorkerRequisitesPage = () => {
             <div className={scss.button}>
                 <BlueButton text={"Обновить данные"} onClick={() => updateWorkerData({first_name: name, surname: surname, last_name: lastName, phone: phone, email: email}, getToken)}/>
             </div>
-        </div>
+        </>
     );
 };
 

@@ -1,6 +1,5 @@
 import useAuthData from "../../../hooks/useAuthData";
 import scss from "./DocumentsPage.module.scss";
-import Header from "../../views/Header/Header";
 import React, {useEffect, useMemo, useState} from "react";
 import axios from "axios";
 import {ICompany} from "../../views/CompanyCard/CompanyCard";
@@ -51,7 +50,7 @@ const getDocuments = async (inn: string, token: string) => {
 
 const DocumentsPage = () => {
     const {getToken, authUser} = useAuthData();
-    const { selectedCompany } = useUser()
+    const {selectedCompany} = useUser()
 
     const [documentTypes, setDocumentTypes] = useState<DocumentType[]>([])
     const [documents, setDocuments] = useState<Document[]>([])
@@ -65,7 +64,7 @@ const DocumentsPage = () => {
     useEffect(() => {
         if (!selectedCompany) return;
         setIsDocumentsLoading(true)
-        
+
         getDocumentTypes(getToken!).then(setDocumentTypes);
         getDocuments(selectedCompany.inn!, getToken!).then((value) => {
             setIsDocumentsLoading(false)
@@ -173,9 +172,7 @@ const DocumentsPage = () => {
     ]
 
     return (
-        <div className={scss.documentsContainer}>
-            <Header companyName={authUser?.company.name}/>
-
+        <>
             <div className={scss.header}>
                 <h1>Документы</h1>
 
@@ -220,7 +217,7 @@ const DocumentsPage = () => {
                         <Table data={group.documents} columns={columns}></Table>
                     </div>
                 ))}
-        </div>
+        </>
     );
 }
 

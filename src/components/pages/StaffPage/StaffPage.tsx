@@ -7,7 +7,6 @@ import StaffTable from "../../comps/StaffTable/StaffTable";
 import Input from "../../comps/Input/Input";
 import { IWorkerData, useStaff } from "../../../store/StaffState";
 import { documentTypes } from "./consts";
-import Header from "../../views/Header/Header";
 import toast from "react-hot-toast";
 import useAuthData from "../../../hooks/useAuthData";
 import {useUser} from "../../../store/UserState";
@@ -19,7 +18,7 @@ const StaffPage = () => {
     const [fileData, setFileData] = useState<{ fileData: any; file: any }>({ file: null, fileData: null });
     const [tableData, setTableData] = useState<IWorkerData[]>([]);
     const { selectedCompany } = useUser()
-    const { getFile, uploadFile, loading, getCompanies, getNewDataForTable } = useStaff((state) => ({
+    const { getFile, uploadFile, loading, getNewDataForTable } = useStaff((state) => ({
         getFile: state.useGetFile,
         uploadFile: state.useAddStaff,
         loading: state.loading,
@@ -38,8 +37,7 @@ const StaffPage = () => {
     }, [selectedCompany]);
 
     return (
-        <div className={scss.staffContainer}>
-            <Header companyName={authUser?.company.name}/>
+        <>
             <div className={scss.headContainer}>
                 <h1>Сотрудники компании</h1>
                 <div className={scss.dropDownContainer}>
@@ -98,10 +96,11 @@ const StaffPage = () => {
                     </div>
                 </div>
             </div>
+            
             <div className={scss.table}>
                 <StaffTable tableData={tableData} loading={loading} />
             </div>
-        </div>
+        </>
     );
 };
 
