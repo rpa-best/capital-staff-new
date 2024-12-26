@@ -1,0 +1,14 @@
+name: Node Build
+on: push
+jobs:
+  build:
+    runs-on: self-hosted
+    container: 
+      image: node:lts-alpine
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Install
+        run: npm ci
+      - name: Build
+        run: npm run build
