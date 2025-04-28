@@ -1,8 +1,6 @@
 import React, {useState} from "react";
 import scss from "./Login.module.scss"
-import RubleCoin from "../../../assets/coin.png";
 import Line from "../../../assets/line.svg";
-import {NavLink, useNavigate} from "react-router-dom";
 import {CHANGE_PASSWORD, LOGIN_PAGE, REGISTRATION_PAGE, STAFF_PAGE} from "../../../consts/pageConsts";
 import Input from "../../comps/Input/Input";
 import BlueButton from "../../comps/BlueButton/BlueButton";
@@ -11,6 +9,10 @@ import {Vortex} from "react-loader-spinner";
 import useSignIn from "react-auth-kit/hooks/useSignIn";
 import axios from "axios";
 import PasswordInput from "../../comps/PasswordInput/PasswordInput";
+import PrefixedNavLink from "../../comps/PrefixedNavLink/PrefixedNavLink";
+import AppLogo from "../../comps/AppLogo/AppLogo";
+import {useRoutePrefix} from "../../../hooks/useRoutePrefix";
+import {usePrefixedNavigate} from "../../../hooks/usePrefixedNavigate";
 
 const success = (message: string) => toast.success(message);
 const error = (message: string) => toast.error(message)
@@ -30,7 +32,8 @@ interface IMyCompany {
     k_s: string
     has_skud: boolean
 }
-export interface IAuthUser{
+
+export interface IAuthUser {
     id: number,
     firsName: string | null,
     lastName: string | null,
@@ -39,13 +42,16 @@ export interface IAuthUser{
     email: string,
     company: IMyCompany
 }
+
 const Login = () => {
     const signIn = useSignIn()
     const [loading, setLoading] = useState(false)
     const [rememberMe, setRememberMe] = useState(false)
     const [emailValue, setEmailValue] = useState('');
     const [passwordValue, setPasswordValue] = useState('');
-    const navigate = useNavigate();
+    const navigate = usePrefixedNavigate()
+
+    const {prefix} = useRoutePrefix()
 
     const handleClick = async () => {
         try {
@@ -122,8 +128,7 @@ const Login = () => {
         <React.Fragment>
             <div className={scss.loginContainer}>
                 <div className={scss.header}>
-                    <img className={scss.coinImage} src={RubleCoin} alt="Ruble-coin"/>
-                    <b className={scss.company}>Капитал Кадры</b>
+                    <AppLogo></AppLogo>
                     <img src={Line} alt="Line"/>
                     <div className={scss.lk}>
                         Личный кабинет
@@ -131,20 +136,31 @@ const Login = () => {
                 </div>
                 <div className={scss.body}>
                     <div className={scss.links}>
-                        <NavLink className={({isActive}) => isActive ? scss.active : scss.link} to={LOGIN_PAGE}><b>Вход</b></NavLink>
-                        <NavLink className={({isActive}) => isActive ? scss.active : scss.link} to={REGISTRATION_PAGE}><b>Регистрация</b></NavLink>
+                        <PrefixedNavLink className={({isActive}) => isActive ? scss.active : scss.link} to={LOGIN_PAGE}><b>Вход</b></PrefixedNavLink>
+                        <PrefixedNavLink
+                            className={({isActive}) => isActive ? scss.active : scss.link}
+                            to={REGISTRATION_PAGE}>
+                            <b>Регистрация</b>
+                        </PrefixedNavLink>
                     </div>
                     <div className={scss.form}>
-                        <Input id={"email"} name={"email"} label={"Ваш email:"} type={"email"} placeholder={"user@mail.ru"} onChange={(event) => setEmailValue(event.target.value)} value={emailValue}/>
-                        <PasswordInput id={"password"} name={"password"} label={"Ваш пароль:"}  placeholder={"******"} onChange={(event) => setPasswordValue(event.target.value)} value={passwordValue}/>
+                        <Input id={"email"} name={"email"} label={"Ваш email:"} type={"email"}
+                               placeholder={"user@mail.ru"} onChange={(event) => setEmailValue(event.target.value)}
+                               value={emailValue}/>
+                        <PasswordInput id={"password"} name={"password"} label={"Ваш пароль:"} placeholder={"******"}
+                                       onChange={(event) => setPasswordValue(event.target.value)}
+                                       value={passwordValue}/>
                         <div className={scss.checkBox}>
-                            <input type="checkbox" id="vehicle" name="vehicle" checked={rememberMe} onClick={() => setRememberMe(!rememberMe)}></input>
+                            <input type="checkbox" id="vehicle" name="vehicle" checked={rememberMe}
+                                   onClick={() => setRememberMe(!rememberMe)}></input>
                             <label className={scss.text} htmlFor="vehicle"> Запомнить меня</label>
-                            <NavLink className={scss.baseLink} to={CHANGE_PASSWORD}>Забыли пароль</NavLink>
+                            <PrefixedNavLink className={scss.baseLink} to={CHANGE_PASSWORD}>
+                                Забыли пароль
+                            </PrefixedNavLink>
                         </div>
                         <div className={scss.button}>
                             <div className={scss.size}>
-                                <BlueButton onClick={async () => await handleClick()} text={"Войти"} />
+                                <BlueButton onClick={async () => await handleClick()} text={"Войти"}/>
                             </div>
                         </div>
                     </div>

@@ -1,15 +1,13 @@
 import {AgGridReact} from 'ag-grid-react';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import {useNavigate} from "react-router-dom";
 import {Vortex} from "react-loader-spinner";
 import React from "react";
-import useAuthUser from "react-auth-kit/hooks/useAuthUser";
-import {IAuthUser} from "../../pages/Login/Login";
 import {IWorkerData} from "../../../store/StaffState";
 import {WORKER_INFO_PAGE} from "../../../consts/pageConsts";
 import {useWorker} from "../../../store/WorkerState";
 import useAuthData from "../../../hooks/useAuthData";
+import {usePrefixedNavigate} from "../../../hooks/usePrefixedNavigate";
 
 interface IStaffTable {
     tableData: IWorkerData[],
@@ -18,7 +16,7 @@ interface IStaffTable {
 
 const StaffTable = ({tableData, loading}: IStaffTable) => {
     const {getToken} = useAuthData()
-    const navigate = useNavigate()
+    const navigate = usePrefixedNavigate()
     const {setWorkerId} = useWorker((state) => ({
         setWorkerId: state.setWorkerId
     }))
@@ -35,9 +33,9 @@ const StaffTable = ({tableData, loading}: IStaffTable) => {
         loadingOoo: 'Загрузка...',
         loadingError: 'Ошибка загрузки...',
     }
-    
+
     const preparedData: any[] = []
-    
+
     tableData.forEach(item => {
         const tempData = {
             id: item.id,
@@ -51,7 +49,7 @@ const StaffTable = ({tableData, loading}: IStaffTable) => {
             potent_do: '-',
             polis_oms_do: '-',
         }
-            
+
         item.docs?.forEach(doc => {
             switch (doc.type.slug) {
                 case 'check_do':
@@ -96,7 +94,7 @@ const StaffTable = ({tableData, loading}: IStaffTable) => {
         overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Загрузка данных...</span>',
         overlayNoRowsTemplate: '<span class="ag-overlay-no-rows-center">Нет информации о сотрудниках</span>'
     };
-    
+
     return (
         <React.Fragment>
             <React.StrictMode>

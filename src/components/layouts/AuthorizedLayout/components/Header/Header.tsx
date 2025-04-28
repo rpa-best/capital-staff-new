@@ -1,7 +1,5 @@
 import React, {useEffect, useMemo} from 'react';
 import scss from './Header.module.scss'
-import {NavLink} from "react-router-dom";
-import RubleCoin from "../../../../../assets/coin.png"
 import Line from "../../../../../assets/line.svg"
 import {DOCUMENTS_PAGE, REQUISITES_PAGE, SALARY_PAGE, STAFF_PAGE} from "../../../../../consts/pageConsts";
 import ExitButton from "../../../../comps/ExitButton/ExitButton";
@@ -9,6 +7,8 @@ import useAuthData from "../../../../../hooks/useAuthData";
 import {useUser} from "../../../../../store/UserState";
 import DropDown from "../../../../comps/DropDown/DropDown";
 import cn from "classnames";
+import PrefixedNavLink from "../../../../comps/PrefixedNavLink/PrefixedNavLink";
+import AppLogo from "../../../../comps/AppLogo/AppLogo";
 
 const Header = () => {
     const {getToken} = useAuthData();
@@ -37,8 +37,7 @@ const Header = () => {
         <React.Fragment>
             <div className={cn("container", scss.layout)}>
                 <div className={scss.header}>
-                    <img className={scss.coinImage} src={RubleCoin} alt="Ruble-coin"/>
-                    <b className={scss.b}>Капитал Кадры</b>
+                    <AppLogo></AppLogo>
                     <img src={Line} alt="Line" className={scss.line}/>
                     <div className={scss.nameGroup}>
                         <div className={scss.comText}>
@@ -65,14 +64,14 @@ const Header = () => {
                 </div>
 
                 <div className={scss.links}>
-                    <NavLink className={({isActive}) => isActive ? scss.active : scss.link}
-                             to={STAFF_PAGE}><b>Сотрудники</b></NavLink>
-                    <NavLink className={({isActive}) => isActive ? scss.active : scss.link}
-                             to={REQUISITES_PAGE}><b>Реквизиты</b></NavLink>
-                    <NavLink className={({isActive}) => isActive ? scss.active : scss.link}
-                             to={DOCUMENTS_PAGE}><b>Документы</b></NavLink>
-                    <NavLink className={({isActive}) => isActive ? scss.active : scss.link}
-                             to={SALARY_PAGE}><b>Зарплата</b></NavLink>
+                    <PrefixedNavLink className={({isActive}) => isActive ? scss.active : scss.link}
+                                     to={STAFF_PAGE}><b>Сотрудники</b></PrefixedNavLink>
+                    <PrefixedNavLink className={({isActive}) => isActive ? scss.active : scss.link}
+                                     to={REQUISITES_PAGE}><b>Реквизиты</b></PrefixedNavLink>
+                    <PrefixedNavLink className={({isActive}) => isActive ? scss.active : scss.link}
+                                     to={DOCUMENTS_PAGE}><b>Документы</b></PrefixedNavLink>
+                    <PrefixedNavLink className={({isActive}) => isActive ? scss.active : scss.link}
+                                     to={SALARY_PAGE}><b>Зарплата</b></PrefixedNavLink>
                 </div>
             </div>
         </React.Fragment>

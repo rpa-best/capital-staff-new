@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import scss from './WorkerPage.module.scss'
 import {Vortex} from "react-loader-spinner";
-import {NavLink} from "react-router-dom";
 import {WORKER_DOCUMENTS_PAGE, WORKER_INFO_PAGE, WORKER_REQUISITES_PAGE} from "../../../consts/pageConsts";
 import Input from "../../comps/Input/Input";
 import BlueButton from "../../comps/BlueButton/BlueButton";
 import {useWorker} from "../../../store/WorkerState";
 import useAuthData from "../../../hooks/useAuthData";
+import PrefixedNavLink from "../../comps/PrefixedNavLink/PrefixedNavLink";
 const WorkerRequisitesPage = () => {
     const {getToken, authUser} = useAuthData()
     const {workerData, isLoading, updateWorkerData} = useWorker((state) => ({
@@ -44,9 +44,9 @@ const WorkerRequisitesPage = () => {
             </div>
             
             <div className={scss.links}>
-                <NavLink className={({isActive}) => isActive ? scss.active : scss.link} to={WORKER_INFO_PAGE}><b>Работа</b></NavLink>
-                <NavLink className={({isActive}) => isActive ? scss.active : scss.link} to={WORKER_REQUISITES_PAGE}><b>Реквизиты</b></NavLink>
-                <NavLink className={({isActive}) => isActive ? scss.active : scss.link} to={WORKER_DOCUMENTS_PAGE}><b>Документы</b></NavLink>
+                <PrefixedNavLink className={({isActive}) => isActive ? scss.active : scss.link} to={WORKER_INFO_PAGE}><b>Работа</b></PrefixedNavLink>
+                <PrefixedNavLink className={({isActive}) => isActive ? scss.active : scss.link} to={WORKER_REQUISITES_PAGE}><b>Реквизиты</b></PrefixedNavLink>
+                <PrefixedNavLink className={({isActive}) => isActive ? scss.active : scss.link} to={WORKER_DOCUMENTS_PAGE}><b>Документы</b></PrefixedNavLink>
             </div>
             
             <div className={scss.workPlaceTitle}>
