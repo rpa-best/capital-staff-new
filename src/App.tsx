@@ -24,37 +24,86 @@ import {SalaryPage} from "./components/pages/SalaryPage/SalaryPage";
 import {ReportCardPage} from "./components/pages/SalaryPage/pages/ReportCardPage/ReportCardPage";
 import {StatementsPage} from "./components/pages/SalaryPage/pages/StatementsPage/StatementsPage";
 import {AuthorizedLayout} from "./components/layouts/AuthorizedLayout/AuthorizedLayout";
+import {useRoutePrefix} from "./hooks/useRoutePrefix";
+
+const AUTH_ROUTES = [
+    {path: "requisites", element: <RequisitesPage/>},
+    {path: "staff", element: <StaffPage/>},
+    {path: "worker-info", element: <WorkerPage/>},
+    {path: "worker-documents", element: <WorkerDocumentsPage/>},
+    {path: "documents", element: <DocumentsPage/>},
+    {path: "worker-requisites", element: <WorkerRequisitesPage/>},
+    {
+        path: "salary",
+        element: <SalaryPage/>,
+        children: [
+            {index: true, element: <Navigate to="statements"/>},
+            {path: "statements", element: <StatementsPage/>},
+            {path: "report-card", element: <ReportCardPage/>},
+        ],
+    },
+];
 
 function App() {
+    const {prefix} = useRoutePrefix()
+
+    const applyPrefix = (path: string) => (prefix ? `/${prefix}${path}` : path);
+
     return (
         <React.Fragment>
             <div className={style.body}>
                 <Routes>
-                    <Route path={LOGIN_PAGE} element={<Login/>}></Route>
-                    <Route path={REGISTRATION_PAGE} element={<RegistrationPage/>}></Route>
+                    <Route path={applyPrefix(LOGIN_PAGE)} element={<Login/>}></Route>
+                    <Route path={applyPrefix(REGISTRATION_PAGE)} element={<RegistrationPage/>}></Route>
+
                     <Route
-                        path={"/"}
+                        path={`/${prefix}`}
                         element={
-                            <RequireAuth fallbackPath={LOGIN_PAGE}>
+                            <RequireAuth fallbackPath={applyPrefix(LOGIN_PAGE)}>
                                 <AuthorizedLayout/>
                             </RequireAuth>
                         }
                         children={
                             <>
-                                <Route path={REQUISITES_PAGE} element={<RequisitesPage/>}/>
-                                <Route path={STAFF_PAGE} element={<StaffPage/>}/>
-                                <Route path={WORKER_INFO_PAGE} element={<WorkerPage/>}/>
-                                <Route path={WORKER_DOCUMENTS_PAGE} element={<WorkerDocumentsPage/>}/>
-                                <Route path={DOCUMENTS_PAGE} element={<DocumentsPage/>}/>
-                                <Route path={WORKER_REQUISITES_PAGE} element={<WorkerRequisitesPage/>}/>
                                 <Route
-                                    path={SALARY_PAGE}
+                                    index
+                                    element={<Navigate to={applyPrefix(STAFF_PAGE)} replace/>}
+                                />
+                            </>
+                        }
+                    ></Route>
+
+                    <Route
+                        path={"/"}
+                        element={
+                            <RequireAuth fallbackPath={applyPrefix(LOGIN_PAGE)}>
+                                <AuthorizedLayout/>
+                            </RequireAuth>
+                        }
+                        children={
+                            <>
+                                <Route
+                                    index
+                                    element={<Navigate to={applyPrefix(STAFF_PAGE)} replace/>}
+                                />
+
+                                <Route path={applyPrefix(REQUISITES_PAGE)} element={<RequisitesPage/>}/>
+                                <Route index path={applyPrefix(STAFF_PAGE)} element={<StaffPage/>}/>
+                                <Route path={applyPrefix(WORKER_INFO_PAGE)} element={<WorkerPage/>}/>
+                                <Route path={applyPrefix(WORKER_DOCUMENTS_PAGE)} element={<WorkerDocumentsPage/>}/>
+                                <Route path={applyPrefix(DOCUMENTS_PAGE)} element={<DocumentsPage/>}/>
+                                <Route path={applyPrefix(WORKER_REQUISITES_PAGE)} element={<WorkerRequisitesPage/>}/>
+                                <Route
+                                    path={applyPrefix(SALARY_PAGE)}
                                     element={<SalaryPage/>}
                                     children={
                                         <>
-                                            <Route index element={<Navigate to={SALARY_STATEMENTS_PAGE}/>}/>
-                                            <Route path={SALARY_STATEMENTS_PAGE} element={<StatementsPage/>}/>
-                                            <Route index path={REPORT_CARD_PAGE} element={<ReportCardPage/>}/>
+                                            <Route index
+                                                   element={<Navigate to={applyPrefix(SALARY_STATEMENTS_PAGE)}/>}/>
+                                            <Route path={applyPrefix(SALARY_STATEMENTS_PAGE)}
+                                                   element={<StatementsPage/>}/>
+                                            <Route index path={applyPrefix(REPORT_CARD_PAGE)}
+                                                   element={<ReportCardPage/>}/>
                                         </>
                                     }
                                 />
