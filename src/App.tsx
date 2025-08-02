@@ -1,11 +1,9 @@
 import React from 'react';
 import style from "./App.module.scss"
-import {Navigate, Route, Routes, useLocation} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import {
-    CHANGE_PASSWORD,
     DOCUMENTS_PAGE,
-    LOGIN_PAGE,
-    MAIN_PAGE, NEW_PASSWORD,
+    LOGIN_PAGE, MEDICINE_PAGE,
     REGISTRATION_PAGE, REPORT_CARD_PAGE,
     REQUISITES_PAGE, SALARY_PAGE, SALARY_STATEMENTS_PAGE,
     STAFF_PAGE, WORKER_DOCUMENTS_PAGE, WORKER_INFO_PAGE, WORKER_REQUISITES_PAGE
@@ -25,24 +23,9 @@ import {ReportCardPage} from "./components/pages/SalaryPage/pages/ReportCardPage
 import {StatementsPage} from "./components/pages/SalaryPage/pages/StatementsPage/StatementsPage";
 import {AuthorizedLayout} from "./components/layouts/AuthorizedLayout/AuthorizedLayout";
 import {useRoutePrefix} from "./hooks/useRoutePrefix";
+import MedicinePage from "./components/pages/Medicine";
+import MedicalDirectionsPage from "./components/pages/MedicalDirections";
 
-const AUTH_ROUTES = [
-    {path: "requisites", element: <RequisitesPage/>},
-    {path: "staff", element: <StaffPage/>},
-    {path: "worker-info", element: <WorkerPage/>},
-    {path: "worker-documents", element: <WorkerDocumentsPage/>},
-    {path: "documents", element: <DocumentsPage/>},
-    {path: "worker-requisites", element: <WorkerRequisitesPage/>},
-    {
-        path: "salary",
-        element: <SalaryPage/>,
-        children: [
-            {index: true, element: <Navigate to="statements"/>},
-            {path: "statements", element: <StatementsPage/>},
-            {path: "report-card", element: <ReportCardPage/>},
-        ],
-    },
-];
 
 function App() {
     const {prefix} = useRoutePrefix()
@@ -92,6 +75,8 @@ function App() {
                                 <Route path={applyPrefix(WORKER_INFO_PAGE)} element={<WorkerPage/>}/>
                                 <Route path={applyPrefix(WORKER_DOCUMENTS_PAGE)} element={<WorkerDocumentsPage/>}/>
                                 <Route path={applyPrefix(DOCUMENTS_PAGE)} element={<DocumentsPage/>}/>
+                                <Route path={applyPrefix(MEDICINE_PAGE)} element={<MedicinePage/>}/>
+                                <Route path={applyPrefix("/medical-directions/:workerId")} element={<MedicalDirectionsPage/>}/>
                                 <Route path={applyPrefix(WORKER_REQUISITES_PAGE)} element={<WorkerRequisitesPage/>}/>
                                 <Route
                                     path={applyPrefix(SALARY_PAGE)}

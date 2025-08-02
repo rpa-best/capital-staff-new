@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo} from 'react';
 import scss from './Header.module.scss'
 import Line from "../../../../../assets/line.svg"
-import {DOCUMENTS_PAGE, REQUISITES_PAGE, SALARY_PAGE, STAFF_PAGE} from "../../../../../consts/pageConsts";
+import {DOCUMENTS_PAGE, MEDICINE_PAGE, REQUISITES_PAGE, SALARY_PAGE, STAFF_PAGE} from "../../../../../consts/pageConsts";
 import ExitButton from "../../../../comps/ExitButton/ExitButton";
 import useAuthData from "../../../../../hooks/useAuthData";
 import {useUser} from "../../../../../store/UserState";
@@ -72,6 +72,8 @@ const Header = () => {
                                      to={DOCUMENTS_PAGE}><b>Документы</b></PrefixedNavLink>
                     <PrefixedNavLink className={({isActive}) => isActive ? scss.active : scss.link}
                                      to={SALARY_PAGE}><b>Зарплата</b></PrefixedNavLink>
+                    <PrefixedNavLink className={({isActive}) => isActive ? scss.active : scss.link}
+                                     to={MEDICINE_PAGE}><b>Медицина</b></PrefixedNavLink>
                 </div>
             </div>
         </React.Fragment>
