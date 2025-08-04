@@ -140,3 +140,14 @@
     color: #2e7d32;
   }
 }
+
+.actions {
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: flex-end;
+
+  & > button {
+    width: fit-content;
+  }
+}
+

@@ -1,7 +1,27 @@
-import React from 'react';
+import { useState } from 'react';
 import scss from './MedicalDirectionModal.module.scss';
 import {IMedicalDirection} from "../../types";
 import Modal from "../../../../comps/Modal/Modal";
+import useAuthData from '../../../../../hooks/useAuthData';
+import { useParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import axios from 'axios';
+import { downloadBlob } from '../../../../../utils/download';
+import BlueButton from '../../../../comps/BlueButton/BlueButton';
+
+const downloadDirectionPdf = async (workerId: string, orderId: number, token: string) => {
+    const url = `${process.env.REACT_APP_BASE_URL}/api/mprofid/worker/${workerId}/invoice/${orderId}/direction/`;
+    const response = await axios.get(url, {
+        headers: {
+            Authorization: token,
+            'Content-Type': 'application/pdf',
+        },
+        responseType: 'blob',
+    });
+
+    const blob = new Blob([response.data], { type: 'application/pdf' });
+    downloadBlob(blob, `Направление №${orderId}.pdf`);
+};
 
 interface IMedicalDirectionModal {
     isOpen: boolean;
@@ -10,9 +30,31 @@ interface IMedicalDirectionModal {
 }
 
 const MedicalDirectionModal = ({isOpen, onClose, direction}: IMedicalDirectionModal) => {
+    const { getToken } = useAuthData();
+    const { workerId } = useParams<{ workerId: string }>();
+    const [isDownloading, setIsDownloading] = useState(false);
+
     if (!direction) return null;
 
     const {data} = direction;
+
+    const handleDownloadPdf = async () => {
+        if (!workerId || !direction.id) {
+            toast.error('Не удалось определить параметры для скачивания');
+            return;
+        }
+
+        setIsDownloading(true);
+        try {
+            await downloadDirectionPdf(workerId, direction.id, getToken!);
+            toast.success('Направление скачано');
+        } catch (error) {
+            toast.error('Не удалось скачать направление');
+            console.error('Download error:', error);
+        } finally {
+            setIsDownloading(false);
+        }
+    };
 
     return (
         <Modal 
@@ -23,6 +65,14 @@ const MedicalDirectionModal = ({isOpen, onClose, direction}: IMedicalDirectionMo
             maxWidth="90vw"
         >
             <div className={scss.content}>
+                <div className={scss.actions}>
+                    <BlueButton 
+                        text={'Скачать направление'}
+                        onClick={handleDownloadPdf}
+                        disabled={isDownloading}
+                    />
+                </div>
+
                 <div className={scss.section}>
                     <h3>Основная информация</h3>
                     <div className={scss.infoGrid}>
