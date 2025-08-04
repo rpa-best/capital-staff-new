@@ -3,12 +3,19 @@ import style from "./BlueButton.module.scss"
 
 interface IBlueButton {
     text: string,
-    onClick: any
+    onClick: any,
+    disabled?: boolean
 }
 const BlueButton = (props: IBlueButton) => {
     return (
         <React.Fragment>
-            <button className={style.button} onClick={props.onClick}>{props.text}</button>
+            <button 
+                className={style.button} 
+                onClick={props.onClick} 
+                disabled={props.disabled}
+            >
+                {props.text}
+            </button>
         </React.Fragment>
     )
 }
