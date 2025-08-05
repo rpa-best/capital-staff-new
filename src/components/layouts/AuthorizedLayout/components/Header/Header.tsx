@@ -22,12 +22,14 @@ const Header = () => {
     }, [myCompanies])
 
     useEffect(() => {
-        loadMyCompanies(getToken!).then(() => {
-            if (!selectedCompany || !myCompanies.some(company => company.inn === selectedCompany.inn)) {
-                setSelectedCompany(myCompanies[0])
-            }
-        })
+        loadMyCompanies(getToken!).then()
     }, []);
+
+    useEffect(() => {
+        if (!selectedCompany || !myCompanies.some(company => company.inn === selectedCompany.inn)) {
+            setSelectedCompany(myCompanies[0])
+        }
+    }, [myCompanies])
 
     const handleSelectCompany = (inn: string) => {
         setSelectedCompany(myCompanies.find(company => company.inn === inn))
