@@ -15,7 +15,7 @@ interface Document {
 }
 
 const getDocuments = async (inn: string, token: string) => {
-    const response = await axios.get<Document[]>(`${process.env.REACT_APP_BASE_URL}/api/organization/org/${inn}/docs`, {
+    const response = await axios.get<Document[]>(`${process.env.REACT_APP_BASE_URL}/api/organization/org/${inn}/docs/`, {
         headers: {
             Authorization: token
         },

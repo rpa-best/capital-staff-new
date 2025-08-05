@@ -42,7 +42,7 @@ export const useStaff = create<IStaffState>()((set) => ({
     loading: false,
     useGetFile: async (token) => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/worker/upload-instance`, {
+            const response = await fetch(`${process.env.REACT_APP_BASE_URL}/api/worker/upload-instance/`, {
                 headers: {
                     Authorization: token as string
                 }
