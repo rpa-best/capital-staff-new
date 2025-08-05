@@ -34,7 +34,7 @@ interface TableResponse {
 type UpdateTableCell = Pick<ReportCardItem, 'date' | 'value' | 'worker'>
 
 const getReportCardItems = async (inn: string, token: string, dateGte: string, dateLte: string) => {
-    const response = await axios.get<TableResponse>(`${process.env.REACT_APP_BASE_URL}/api/organization/org/${inn}/table`, {
+    const response = await axios.get<TableResponse>(`${process.env.REACT_APP_BASE_URL}/api/organization/org/${inn}/table/`, {
         params: {
             date_gte: dateGte,
             date_lte: dateLte

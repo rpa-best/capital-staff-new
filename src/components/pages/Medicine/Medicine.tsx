@@ -20,7 +20,7 @@ const Medicine = () => {
     useEffect(() => {
         if (!selectedCompany) return;
         
-        getNewDataForTable(getToken, undefined, selectedCompany.inn!).then((data) => {
+        getNewDataForTable(getToken, undefined, selectedCompany.inn!, true).then((data) => {
             setTableData(data);
         }).catch(() => {
             errorMessage('Не удалось обновить данные сотрудников');

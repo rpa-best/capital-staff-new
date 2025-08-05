@@ -39,7 +39,7 @@ const getDocumentTypes = async (token: string) => {
 }
 
 const getDocuments = async (inn: string, token: string) => {
-    const response = await axios.get<Document[]>(`${process.env.REACT_APP_BASE_URL}/api/organization/doc/${inn}`, {
+    const response = await axios.get<Document[]>(`${process.env.REACT_APP_BASE_URL}/api/organization/doc/${inn}/`, {
         headers: {
             Authorization: token
         },
