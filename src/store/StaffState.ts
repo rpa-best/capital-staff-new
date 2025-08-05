@@ -35,7 +35,7 @@ interface IStaffState {
     useGetFile: (token: string | null) => any
     useAddStaff: (token: string | null, data: any, authUser: IAuthUser | null) => void
     useGetCompanies: (token: string | null, authUser: IAuthUser | null) => Promise<ICompany[] | []>
-    useGetNewDataForTable: (token: string | null, documentType?: string, tempCompany?: string) => Promise<IWorkerData[]>
+    useGetNewDataForTable: (token: string | null, documentType?: string, tempCompany?: string, hasDirection?: boolean) => Promise<IWorkerData[]>
 }
 
 export const useStaff = create<IStaffState>()((set) => ({
@@ -112,7 +112,7 @@ export const useStaff = create<IStaffState>()((set) => ({
 
         }
     },
-    useGetNewDataForTable: async (token, documentType, tempCompany) => {
+    useGetNewDataForTable: async (token, documentType, tempCompany, hasDirection) => {
         set({
             loading: true
         });
@@ -122,7 +122,7 @@ export const useStaff = create<IStaffState>()((set) => ({
                 headers: {
                     Authorization: token
                 },
-                params: {} as { org?: string; status_doc?: string }
+                params: {} as { org?: string; status_doc?: string; has_direction?: boolean }
             };
 
             if (tempCompany) {
@@ -130,6 +130,9 @@ export const useStaff = create<IStaffState>()((set) => ({
             }
             if (documentType) {
                 config.params.status_doc = documentType;
+            }
+            if (hasDirection) {
+                config.params.has_direction = hasDirection;
             }
 
             const response = await axios.get(url, config);
