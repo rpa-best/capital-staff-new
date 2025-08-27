@@ -9,8 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest  # Стандартный GitHub runner
-    env:
-        REACT_APP_BASE_URL: https://api.kk.keyman24.ru
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
@@ -25,20 +23,3 @@ jobs:
       - name: Push Docker image
         run: |
           docker push khtkarimzhonov/guestworkers-front:latest
-
-  deploy:
-    needs: build  # Этот job запустится только после build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to production server
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.PROD_HOST }}
-          username: ${{ secrets.PROD_USER }}
-          key: ${{ secrets.PROD_SSH_KEY }}
-          script: |
-            cd /var/www/guestworkers-front
-            docker-compose down
-            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "khtkarimzhonov" --password-stdin
-            docker pull khtkarimzhonov/guestworkers-front:latest
-            docker-compose up -d
