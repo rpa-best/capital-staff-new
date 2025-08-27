@@ -1,14 +1,44 @@
-name: Node Build
-on: push
+name: CI/CD Workflow
+
+on:
+  push:
+    branches:
+      - prod
+  workflow_dispatch:
+
 jobs:
   build:
-    runs-on: self-hosted
-    container: 
-      image: node:lts-alpine
+    runs-on: ubuntu-latest  # Стандартный GitHub runner
+    env:
+        REACT_APP_BASE_URL: https://api.kk.keyman24.ru
     steps:
       - name: Check out the repo
         uses: actions/checkout@v2
-      - name: Install
-        run: npm ci
-      - name: Build
-        run: npm run build
+
+      - name: Log in to Docker registry
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "khtkarimzhonov" --password-stdin
+
+      - name: Build Docker image
+        run: |
+          docker build -t khtkarimzhonov/guestworkers-front:latest .
+
+      - name: Push Docker image
+        run: |
+          docker push khtkarimzhonov/guestworkers-front:latest
+
+  deploy:
+    needs: build  # Этот job запустится только после build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to production server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          script: |
+            cd /var/www/guestworkers-front
+            docker-compose down
+            echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "khtkarimzhonov" --password-stdin
+            docker pull khtkarimzhonov/guestworkers-front:latest
+            docker-compose up -d
