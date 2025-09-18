@@ -1,31 +1,38 @@
 import React, { useEffect, useState } from "react";
 import scss from "./Medicine.module.scss";
 import MedicalStaffTable from "./components/MedicalStaffTable/MedicalStaffTable";
-import { IWorkerData, useStaff } from "../../../store/StaffState";
 import toast from "react-hot-toast";
 import useAuthData from "../../../hooks/useAuthData";
-import { useUser } from "../../../store/UserState";
+import axios from "axios";
+import { IWorkerInvoice } from "./types";
 
 const errorMessage = (message: string) => toast.error(message);
 
 const Medicine = () => {
     const { getToken } = useAuthData();
-    const [tableData, setTableData] = useState<IWorkerData[]>([]);
-    const { selectedCompany } = useUser();
-    const { loading, getNewDataForTable } = useStaff((state) => ({
-        loading: state.loading,
-        getNewDataForTable: state.useGetNewDataForTable
-    }));
+    const [workerInvoices, setWorkerInvoices] = useState<IWorkerInvoice[]>([]);
+    const [loading, setLoading] = useState(false);
+
+    const fetchWorkerInvoices = async () => {
+        setLoading(true);
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/mprofid/worker-invoice/`, {
+                headers: {
+                    Authorization: getToken
+                }
+            });
+            setWorkerInvoices(response.data);
+        } catch (error) {
+            errorMessage('Не удалось загрузить счета сотрудников');
+            console.error('Error fetching worker invoices:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        if (!selectedCompany) return;
-        
-        getNewDataForTable(getToken, undefined, selectedCompany.inn!, true).then((data) => {
-            setTableData(data);
-        }).catch(() => {
-            errorMessage('Не удалось обновить данные сотрудников');
-        });
-    }, [selectedCompany, getToken, getNewDataForTable]);
+        fetchWorkerInvoices();
+    }, [getToken]);
 
     return (
         <>
@@ -34,7 +41,7 @@ const Medicine = () => {
             </div>
             
             <div className={scss.table}>
-                <MedicalStaffTable tableData={tableData} loading={loading} />
+                <MedicalStaffTable tableData={workerInvoices} loading={loading} />
             </div>
         </>
     );
