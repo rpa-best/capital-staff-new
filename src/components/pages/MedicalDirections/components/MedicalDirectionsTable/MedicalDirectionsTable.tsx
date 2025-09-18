@@ -25,22 +25,24 @@ const MedicalDirectionsTable = ({tableData, loading, onRowClick}: IMedicalDirect
     const preparedData = tableData.map(item => ({
         id: item.id,
         fam: item.data.fam,
-        status: item.data.statusName,
+        subdivision: item.data.subdivision.name || '-',
+        profession: item.data.profession.name || '-',
         orderDate: item.data.orderDate,
-        services: item.data.services.map(s => s.name).join(', '),
-        created_at: item.created_at,
+        status: item.data.statusName,
         paymentSum: item.data.paymentSum,
+        numberLmk: item.data.numberLmk || '-',
         original: item
     }));
 
     const colDefs: any[] = [
         {headerName: "ID", field: "id", width: 100},
         {headerName: "ФИО", field: "fam", width: 200},
+        {headerName: "Подразделение", field: "subdivision", width: 150},
+        {headerName: "Должность", field: "profession", width: 150},
+        {headerName: "Дата медосмотра", field: "orderDate", width: 120},
         {headerName: "Статус", field: "status", width: 200},
-        {headerName: "Дата заказа", field: "orderDate", width: 120},
-        {headerName: "Услуги", field: "services", width: 300},
-        {headerName: "Дата создания", field: "created_at", width: 150},
-        {headerName: "Сумма", field: "paymentSum", width: 100},
+        {headerName: "Стоимость (МО)", field: "paymentSum", width: 100},
+        {headerName: "ЛМК", field: "numberLmk", width: 100},
     ];
 
     const gridOptions = {
