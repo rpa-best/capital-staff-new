@@ -35,7 +35,7 @@ interface IStaffState {
     useGetFile: (token: string | null) => any
     useAddStaff: (token: string | null, data: any, authUser: IAuthUser | null) => void
     useGetCompanies: (token: string | null, authUser: IAuthUser | null) => Promise<ICompany[] | []>
-    useGetNewDataForTable: (token: string | null, documentType?: string, tempCompany?: string, hasDirection?: boolean) => Promise<IWorkerData[]>
+    useGetNewDataForTable: (token: string | null, documentType?: string, tempCompany?: string, hasDirection?: boolean, workerType?: "worker" | "candidate") => Promise<IWorkerData[]>
 }
 
 export const useStaff = create<IStaffState>()((set) => ({
@@ -61,8 +61,9 @@ export const useStaff = create<IStaffState>()((set) => ({
             } else {
                 errorMessage("Что-то пошло не так!")
             }
-        } catch (error) {
-            errorMessage(error as string)
+        } catch (error: any) {
+            const message = error?.message || "Что-то пошло не так!";
+            errorMessage(message)
         }
     },
     useAddStaff: async (token, data, authUser) => {
@@ -101,18 +102,20 @@ export const useStaff = create<IStaffState>()((set) => ({
                     } else {
                         errorMessage('Ошибка при загрузке файла!');
                     }
-                } catch (error) {
-                    errorMessage('Ошибка при загрузке файла!');
+                } catch (error: any) {
+                    const message = error?.response?.data?.message || error?.message || 'Ошибка при загрузке файла!';
+                    errorMessage(message);
                 }
             } else {
                 errorMessage('Выявлены ошибки при проверки файла');
                 return;
             }
-        } catch (error) {
-
+        } catch (error: any) {
+            const message = error?.response?.data?.message || error?.message || 'Ошибка при проверке файла!';
+            errorMessage(message);
         }
     },
-    useGetNewDataForTable: async (token, documentType, tempCompany, hasDirection) => {
+    useGetNewDataForTable: async (token, documentType, tempCompany, hasDirection, workerType) => {
         set({
             loading: true
         });
@@ -122,7 +125,7 @@ export const useStaff = create<IStaffState>()((set) => ({
                 headers: {
                     Authorization: token
                 },
-                params: {} as { org?: string; status_doc?: string; has_direction?: boolean }
+                params: {} as { org?: string; status_doc?: string; has_direction?: boolean; type?: "worker" | "candidate" }
             };
 
             if (tempCompany) {
@@ -134,6 +137,9 @@ export const useStaff = create<IStaffState>()((set) => ({
             if (hasDirection) {
                 config.params.has_direction = hasDirection;
             }
+            if (workerType) {
+                config.params.type = workerType;
+            }
 
             const response = await axios.get(url, config);
 
@@ -141,8 +147,10 @@ export const useStaff = create<IStaffState>()((set) => ({
                 successMessage("Данные в таблице обновлены");
                 return response.data;
             }
-        } catch (error) {
-            errorMessage(error as string);
+        } catch (error: any) {
+            const message = error?.response?.data?.message || error?.message || "Что-то пошло не так!";
+            errorMessage(message);
+            return [];
         } finally {
             set({
                 loading: false

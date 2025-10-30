@@ -3,39 +3,33 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
 import {Vortex} from "react-loader-spinner";
 import React from "react";
-import {IWorkerData} from "../../../store/StaffState";
-import {WORKER_INFO_PAGE} from "../../../consts/pageConsts";
-import {useWorker} from "../../../store/WorkerState";
-import useAuthData from "../../../hooks/useAuthData";
-import {usePrefixedNavigate} from "../../../hooks/usePrefixedNavigate";
+import {IWorkerData} from "../../../../../../store/StaffState";
+import BlueButton from "../../../../../comps/BlueButton/BlueButton";
+import styles from "./CandidatesTable.module.scss";
 
-interface IStaffTable {
-    tableData: IWorkerData[],
-    loading?: boolean,
-    disableRowNavigation?: boolean
+interface ICandidatesTable {
+    tableData: IWorkerData[];
+    loading?: boolean;
+    onMakeEmployee: (candidate: IWorkerData) => void;
 }
 
-const StaffTable = ({tableData, loading, disableRowNavigation = false}: IStaffTable) => {
-    const {getToken} = useAuthData()
-    const navigate = usePrefixedNavigate()
-    const {setWorkerId} = useWorker((state) => ({
-        setWorkerId: state.setWorkerId
-    }))
-    const handleRowClick = (workerId: number) => {
-        setWorkerId(workerId, getToken)
-        navigate(WORKER_INFO_PAGE)
-    }
+const CandidatesTable = ({tableData, loading, onMakeEmployee}: ICandidatesTable) => {
+    const handleMakeEmployee = (candidate: IWorkerData, event: React.MouseEvent) => {
+        event.stopPropagation();
+        onMakeEmployee(candidate);
+    };
+
     const localeText = {
-        noRowsToShow: 'Нет информации о сотрудниках',
+        noRowsToShow: 'Нет информации о кандидатах',
         page: 'Страница',
         of: 'из',
         to: 'до',
-        pageSizeSelectorLabel: 'Количество сотрудников',
+        pageSizeSelectorLabel: 'Количество кандидатов',
         loadingOoo: 'Загрузка...',
         loadingError: 'Ошибка загрузки...',
-    }
+    };
 
-    const preparedData: any[] = []
+    const preparedData: any[] = [];
 
     tableData?.forEach(item => {
         const tempData = {
@@ -49,35 +43,36 @@ const StaffTable = ({tableData, loading, disableRowNavigation = false}: IStaffTa
             jitelstvo_o: '-',
             potent_do: '-',
             polis_oms_do: '-',
-        }
+            originalItem: item
+        };
 
-        item.docs?.forEach(doc => {
+        item.docs?.forEach((doc: any) => {
             switch (doc.type.slug) {
                 case 'check_do':
-                    tempData.check_do = doc.expired_date ?? '-'
-                    break
+                    tempData.check_do = doc.expired_date ?? '-';
+                    break;
                 case 'polis_dms_do':
-                    tempData.polis_dms_do = doc.expired_date ?? '-'
-                    break
+                    tempData.polis_dms_do = doc.expired_date ?? '-';
+                    break;
                 case 'projivanie_do':
-                    tempData.projivanie_do = doc.expired_date ?? '-'
-                    break
+                    tempData.projivanie_do = doc.expired_date ?? '-';
+                    break;
                 case 'jitelstvo_o':
-                    tempData.jitelstvo_o = doc.expired_date ?? '-'
-                    break
+                    tempData.jitelstvo_o = doc.expired_date ?? '-';
+                    break;
                 case 'potent_do':
-                    tempData.potent_do = doc.expired_date ?? '-'
-                    break
+                    tempData.potent_do = doc.expired_date ?? '-';
+                    break;
                 case 'polis_oms_do':
-                    tempData.polis_oms_do = doc.expired_date ?? '-'
-                    break
+                    tempData.polis_oms_do = doc.expired_date ?? '-';
+                    break;
                 default:
-                    break
+                    break;
             }
-        })
+        });
 
-        preparedData.push(tempData)
-    })
+        preparedData.push(tempData);
+    });
 
     const colDefs = [
         {headerName: "Фамилия", field: "last_name"},
@@ -89,11 +84,27 @@ const StaffTable = ({tableData, loading, disableRowNavigation = false}: IStaffTa
         {headerName: "Полис ДМС до", field: "polis_dms_do"},
         {headerName: "Разрешение на временное проживание до", field: "projivanie_do"},
         {headerName: "Вид на жительство до", field: "jitelstvo_o"},
-    ]
+        {
+            headerName: "",
+            field: "actions",
+            pinned: "right" as const,
+            width: 200,
+            cellRenderer: (params: any) => {
+                return React.createElement(BlueButton, {
+                    text: 'Сделать сотрудником',
+                    className: styles.tableButton,
+                    onClick: (e: React.MouseEvent) => {
+                        e.stopPropagation();
+                        handleMakeEmployee(params.data.originalItem, e);
+                    }
+                });
+            }
+        }
+    ];
 
     const gridOptions = {
         overlayLoadingTemplate: '<span class="ag-overlay-loading-center">Загрузка данных...</span>',
-        overlayNoRowsTemplate: '<span class="ag-overlay-no-rows-center">Нет информации о сотрудниках</span>'
+        overlayNoRowsTemplate: '<span class="ag-overlay-no-rows-center">Нет информации о кандидатах</span>'
     };
 
     return (
@@ -122,7 +133,6 @@ const StaffTable = ({tableData, loading, disableRowNavigation = false}: IStaffTa
                         pagination={true}
                         paginationPageSize={10}
                         paginationPageSizeSelector={[10, 25, 50]}
-                        onRowClicked={disableRowNavigation ? undefined : (event) => handleRowClick(event.data.id)}
                         gridOptions={gridOptions}
                         localeText={localeText}
                     />
@@ -130,7 +140,7 @@ const StaffTable = ({tableData, loading, disableRowNavigation = false}: IStaffTa
                 </div>
             </React.StrictMode>
         </React.Fragment>
-    )
-}
+    );
+};
 
-export default StaffTable
+export default CandidatesTable;
