@@ -1,0 +1,87 @@
+.headContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  @media (max-width: 1000px) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+h1 {
+  font-size: 36px;
+  font-weight: 600;
+
+  @media (max-width: 600px) {
+    font-size: 24px;
+  }
+}
+
+.dropDown {
+  width: 240px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+
+  @media (max-width: 600px) {
+    width: 180px;
+  }
+}
+
+.dropDownContainer {
+  display: flex;
+  gap: 20px;
+}
+
+.attributes {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 40px;
+  border-bottom: 1px solid #cacaca;
+
+  @media (max-width: 1000px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.image {
+  width: 44px;
+}
+
+.link {
+  text-decoration: none;
+  color: black;
+  font-size: 14px;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 35px;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 35px;
+
+  @media (max-width: 1000px) {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+.downloadButton {
+  height: 46px;
+}
+
+.table {
+  margin-top: 35px;
+}

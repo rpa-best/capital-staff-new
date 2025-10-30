@@ -36,10 +36,10 @@ const Modal = ({active, loading, setActive, header, children, onClick}: IModal) 
                         /> : null}
                         <div className={scss.modalButtons}>
                             <div>
-                                <WhiteButton text={"Отправить"} isActive={false} onClick={onClick}/>
+                                <WhiteButton text={"Закрыть окно"} isActive={false} onClick={() => setActive(false)}/>
                             </div>
                             <div>
-                                <WhiteButton text={"Закрыть окно"} isActive={false} onClick={() => setActive(false)}/>
+                                <WhiteButton text={"Отправить"} isActive={false} onClick={onClick}/>
                             </div>
                         </div>
                     </div>

@@ -6,7 +6,6 @@ export const refresh = createRefresh({
     refreshApiCallback: async (param) => {
         try {
             const data = { refresh: param.refresh };
-            console.log(param.refresh)
 
             const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/oauth/refresh-token/`, data);
 
@@ -14,8 +13,8 @@ export const refresh = createRefresh({
                 isSuccess: true,
                 newAuthToken: response.data.access,
                 newRefreshToken: response.data.refresh,
-                newAuthTokenExpireIn: 10,
-                newRefreshTokenExpiresIn: 60,
+                newAuthTokenExpireIn: 600,
+                newRefreshTokenExpiresIn: 1000,
             };
         } catch (error) {
             return {

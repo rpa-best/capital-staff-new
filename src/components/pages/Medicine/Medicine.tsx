@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import useAuthData from "../../../hooks/useAuthData";
 import axios from "axios";
 import { IWorkerInvoice } from "./types";
+import {useUser} from "../../../store/UserState";
 
 const errorMessage = (message: string) => toast.error(message);
 
@@ -12,6 +13,7 @@ const Medicine = () => {
     const { getToken } = useAuthData();
     const [workerInvoices, setWorkerInvoices] = useState<IWorkerInvoice[]>([]);
     const [loading, setLoading] = useState(false);
+    const { selectedCompany } = useUser()
 
     const fetchWorkerInvoices = async () => {
         setLoading(true);
@@ -19,6 +21,10 @@ const Medicine = () => {
             const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/mprofid/worker-invoice/`, {
                 headers: {
                     Authorization: getToken
+                },
+                params: {
+                    org: selectedCompany?.inn,
+                    type: "candidate"
                 }
             });
             setWorkerInvoices(response.data);
@@ -32,7 +38,7 @@ const Medicine = () => {
 
     useEffect(() => {
         fetchWorkerInvoices();
-    }, [getToken]);
+    }, [getToken, selectedCompany]);
 
     return (
         <>

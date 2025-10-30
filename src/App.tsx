@@ -6,7 +6,7 @@ import {
     LOGIN_PAGE, MEDICINE_PAGE,
     REGISTRATION_PAGE, REPORT_CARD_PAGE,
     REQUISITES_PAGE, SALARY_PAGE, SALARY_STATEMENTS_PAGE,
-    STAFF_PAGE, WORKER_DOCUMENTS_PAGE, WORKER_INFO_PAGE, WORKER_REQUISITES_PAGE
+    STAFF_PAGE, STAFF_EMPLOYEES_PAGE, STAFF_CANDIDATES_PAGE, WORKER_DOCUMENTS_PAGE, WORKER_INFO_PAGE, WORKER_REQUISITES_PAGE
 } from "./consts/pageConsts";
 import Login from "./components/pages/Login/Login";
 import RegistrationPage from "./components/pages/RegistrationPage/RegistrationPage";
@@ -25,6 +25,8 @@ import {AuthorizedLayout} from "./components/layouts/AuthorizedLayout/Authorized
 import {useRoutePrefix} from "./hooks/useRoutePrefix";
 import MedicinePage from "./components/pages/Medicine";
 import MedicalDirectionsPage from "./components/pages/MedicalDirections";
+import EmployeesPage from "./components/pages/StaffPage/pages/EmployeesPage/EmployeesPage";
+import CandidatesPage from "./components/pages/StaffPage/pages/CandidatesPage/CandidatesPage";
 
 
 function App() {
@@ -71,7 +73,20 @@ function App() {
                                 />
 
                                 <Route path={applyPrefix(REQUISITES_PAGE)} element={<RequisitesPage/>}/>
-                                <Route index path={applyPrefix(STAFF_PAGE)} element={<StaffPage/>}/>
+                                <Route
+                                    path={applyPrefix(STAFF_PAGE)}
+                                    element={<StaffPage/>}
+                                    children={
+                                        <>
+                                            <Route index
+                                                   element={<Navigate to={applyPrefix(STAFF_EMPLOYEES_PAGE)}/>}/>
+                                            <Route path={applyPrefix(STAFF_EMPLOYEES_PAGE)}
+                                                   element={<EmployeesPage/>}/>
+                                            <Route path={applyPrefix(STAFF_CANDIDATES_PAGE)}
+                                                   element={<CandidatesPage/>}/>
+                                        </>
+                                    }
+                                />
                                 <Route path={applyPrefix(WORKER_INFO_PAGE)} element={<WorkerPage/>}/>
                                 <Route path={applyPrefix(WORKER_DOCUMENTS_PAGE)} element={<WorkerDocumentsPage/>}/>
                                 <Route path={applyPrefix(DOCUMENTS_PAGE)} element={<DocumentsPage/>}/>

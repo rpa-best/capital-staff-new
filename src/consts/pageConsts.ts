@@ -1,5 +1,7 @@
 export const MAIN_PAGE = "/"
 export const STAFF_PAGE = "/staff"
+export const STAFF_EMPLOYEES_PAGE = "/staff/employees"
+export const STAFF_CANDIDATES_PAGE = "/staff/candidates"
 export const DOCUMENTS_PAGE = "/documents"
 export const SALARY_PAGE = "/salary"
 export const REPORT_CARD_PAGE = "/salary/report-card"
