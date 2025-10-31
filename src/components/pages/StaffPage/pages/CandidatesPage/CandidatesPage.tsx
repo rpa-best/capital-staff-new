@@ -21,6 +21,9 @@ const makeEmployeeRequest = async (workerId: number, token: string) => {
             headers: {
                 Authorization: token,
                 'Content-Type': 'application/json'
+            },
+            params: {
+                type: "candidate",
             }
         }
     );
