@@ -88,10 +88,10 @@ const CandidatesTable = ({tableData, loading, onMakeEmployee}: ICandidatesTable)
             headerName: "",
             field: "actions",
             pinned: "right" as const,
-            width: 200,
+            width: 220,
             cellRenderer: (params: any) => {
                 return React.createElement(BlueButton, {
-                    text: 'Сделать сотрудником',
+                    text: 'Объединить с сотрудником',
                     className: styles.tableButton,
                     onClick: (e: React.MouseEvent) => {
                         e.stopPropagation();

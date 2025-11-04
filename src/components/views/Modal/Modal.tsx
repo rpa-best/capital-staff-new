@@ -9,13 +9,14 @@ interface IModal {
     setActive: any,
     header: string,
     children: any,
-    onClick: any
+    onClick: any,
+    className?: string
 }
-const Modal = ({active, loading, setActive, header, children, onClick}: IModal) => {
+const Modal = ({active, loading, setActive, header, children, onClick, className}: IModal) => {
     return (
         <React.StrictMode>
             <div className={active ? scss.modalActive : scss.modal} onClick={() => setActive(false)}>
-                <div className={active ? scss.modalContentActive : scss.modalContent}
+                <div className={`${active ? scss.modalContentActive : scss.modalContent} ${className || ''}`}
                      onClick={(event) => event.stopPropagation()}>
                     <div className={scss.modalHeader}><b>{header}</b></div>
                     <div className={scss.modalBody}>

@@ -7,35 +7,17 @@ import toast from "react-hot-toast";
 import useAuthData from "../../../../../hooks/useAuthData";
 import {useUser} from "../../../../../store/UserState";
 import CreateCandidateModal from "./CreateCandidateModal/CreateCandidateModal";
-import ConfirmModal from "../../../../views/Modal/ConfirmModal";
-import axios from "axios";
+import CombineCandidateModal from "./CombineCandidateModal/CombineCandidateModal";
 
 const errorMessage = (message: string) => toast.error(message);
 const successMessage = (message: string) => toast.success(message);
-
-const makeEmployeeRequest = async (workerId: number, token: string) => {
-    const response = await axios.patch(
-        `${process.env.REACT_APP_BASE_URL}/api/worker/worker/${workerId}/`,
-        { type: "worker" },
-        {
-            headers: {
-                Authorization: token,
-                'Content-Type': 'application/json'
-            },
-            params: {
-                type: "candidate",
-            }
-        }
-    );
-    return response.data;
-};
 
 const CandidatesPage = () => {
     const { getToken } = useAuthData();
     const [tableData, setTableData] = useState<IWorkerData[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-    const [candidateToPromote, setCandidateToPromote] = useState<IWorkerData | null>(null);
+    const [isCombineModalOpen, setIsCombineModalOpen] = useState(false);
+    const [candidateToCombine, setCandidateToCombine] = useState<IWorkerData | null>(null);
     const { selectedCompany } = useUser()
     const { loading, getNewDataForTable } = useStaff((state) => ({
         loading: state.loading,
@@ -54,23 +36,8 @@ const CandidatesPage = () => {
     };
 
     const handleMakeEmployee = (candidate: IWorkerData) => {
-        setCandidateToPromote(candidate);
-        setIsConfirmModalOpen(true);
-    };
-
-    const confirmMakeEmployee = async () => {
-        if (!candidateToPromote) return;
-
-        try {
-            await makeEmployeeRequest(candidateToPromote.id, getToken!);
-            successMessage(`${candidateToPromote.last_name} ${candidateToPromote.first_name} теперь сотрудник`);
-            refreshTableData();
-        } catch (error: any) {
-            const message = error?.response?.data?.message || error?.message || "Не удалось изменить статус";
-            errorMessage(message);
-        } finally {
-            setCandidateToPromote(null);
-        }
+        setCandidateToCombine(candidate);
+        setIsCombineModalOpen(true);
     };
 
     useEffect(() => {
@@ -107,17 +74,11 @@ const CandidatesPage = () => {
                 onSuccess={refreshTableData}
             />
 
-            <ConfirmModal
-                active={isConfirmModalOpen}
-                setActive={setIsConfirmModalOpen}
-                header="Подтверждение действия"
-                message={candidateToPromote
-                    ? `Вы уверены, что хотите сделать ${candidateToPromote.last_name} ${candidateToPromote.first_name} сотрудником?`
-                    : "Вы уверены, что хотите продолжить?"
-                }
-                onConfirm={confirmMakeEmployee}
-                confirmText="Да, сделать сотрудником"
-                cancelText="Отмена"
+            <CombineCandidateModal
+                active={isCombineModalOpen}
+                setActive={setIsCombineModalOpen}
+                candidate={candidateToCombine}
+                onSuccess={refreshTableData}
             />
         </>
     );
