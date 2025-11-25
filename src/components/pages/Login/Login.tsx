@@ -35,6 +35,7 @@ interface IMyCompany {
 
 export interface IAuthUser {
     id: number,
+    is_superuser: boolean,
     firsName: string | null,
     lastName: string | null,
     surname: string | null,
@@ -81,6 +82,7 @@ const Login = () => {
                     userState: {
                         id: userData.data.id,
                         firstName: userData.data.first_name,
+                        isSuperUser: userData.data.is_superuser,
                         lastName: userData.data.last_name,
                         surname: userData.data.surname,
                         phone: userData.data.phone,
