@@ -3,7 +3,7 @@ import style from "./App.module.scss"
 import {Navigate, Route, Routes} from "react-router-dom";
 import {
     DOCUMENTS_PAGE,
-    LOGIN_PAGE, MEDICINE_PAGE,
+    LOGIN_PAGE, MEDICINE_PAGE, CREATE_MEDICAL_DIRECTION_PAGE,
     REGISTRATION_PAGE, REPORT_CARD_PAGE,
     REQUISITES_PAGE, SALARY_PAGE, SALARY_STATEMENTS_PAGE,
     STAFF_PAGE, STAFF_EMPLOYEES_PAGE, STAFF_CANDIDATES_PAGE, WORKER_DOCUMENTS_PAGE, WORKER_INFO_PAGE, WORKER_REQUISITES_PAGE
@@ -24,6 +24,7 @@ import {StatementsPage} from "./components/pages/SalaryPage/pages/StatementsPage
 import {AuthorizedLayout} from "./components/layouts/AuthorizedLayout/AuthorizedLayout";
 import {useRoutePrefix} from "./hooks/useRoutePrefix";
 import MedicinePage from "./components/pages/Medicine";
+import CreateMedicalDirection from "./components/pages/Medicine/pages/CreateMedicalDirection/CreateMedicalDirection";
 import MedicalDirectionsPage from "./components/pages/MedicalDirections";
 import EmployeesPage from "./components/pages/StaffPage/pages/EmployeesPage/EmployeesPage";
 import CandidatesPage from "./components/pages/StaffPage/pages/CandidatesPage/CandidatesPage";
@@ -91,6 +92,7 @@ function App() {
                                 <Route path={applyPrefix(WORKER_DOCUMENTS_PAGE)} element={<WorkerDocumentsPage/>}/>
                                 <Route path={applyPrefix(DOCUMENTS_PAGE)} element={<DocumentsPage/>}/>
                                 <Route path={applyPrefix(MEDICINE_PAGE)} element={<MedicinePage/>}/>
+                                <Route path={applyPrefix(CREATE_MEDICAL_DIRECTION_PAGE)} element={<CreateMedicalDirection/>}/>
                                 <Route path={applyPrefix("/medical-directions/:workerId")} element={<MedicalDirectionsPage/>}/>
                                 <Route path={applyPrefix(WORKER_REQUISITES_PAGE)} element={<WorkerRequisitesPage/>}/>
                                 <Route

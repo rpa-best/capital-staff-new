@@ -12,17 +12,20 @@ interface IInput extends React.InputHTMLAttributes<HTMLInputElement> {
 
 
 const Input = (props: IInput) => {
+    const { id, label, type, name, placeholder, onChange, value, ...rest } = props;
+
     return (
         <React.Fragment>
             <div>
-                <label className={style.label} htmlFor={props.id}><b>{props.label}</b></label>
+                <label className={style.label} htmlFor={id}><b>{label}</b></label>
                 <input className={style.input}
-                       type={props.type}
-                       id={props.id}
-                       name={props.name}
-                       placeholder={props.placeholder}
-                       onChange={(event) => props.onChange?.(event)}
-                       value={props.value}
+                       type={type}
+                       id={id}
+                       name={name}
+                       placeholder={placeholder}
+                       onChange={(event) => onChange?.(event)}
+                       value={value}
+                       {...rest}
                 />
             </div>
         </React.Fragment>
