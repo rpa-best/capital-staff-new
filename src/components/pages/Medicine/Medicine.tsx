@@ -49,7 +49,7 @@ const Medicine = () => {
             <div className={scss.headContainer}>
                 <h1>Медицина</h1>
 
-                {authUser?.is_superuser || true && (
+                {authUser?.is_superuser && (
                     <div>
                         <BlueButton
                             text="Создать направление"
