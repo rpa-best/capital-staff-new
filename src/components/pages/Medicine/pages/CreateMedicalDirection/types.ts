@@ -45,18 +45,17 @@ export interface IPart {
 
 export interface IMedicalDirectionFormData {
     gender: "мужской" | "женский" | "";
-    surveyTypeId: string;
-    address: string;
-    citizenship: string;
-    passportPlace: string;
-    phone: string;
-    snils: string;
+    surveyTypeId?: string;
+    address?: string;
+    citizenship?: string;
+    passportPlace?: string;
+    phone?: string;
     payType: number | "";
-    medClientId: string;
-    subdivisionId: string;
-    subdivision: string;
-    professionId: string;
-    profession: string;
+    medClientId: number;
+    subdivisionId?: number;
+    subdivision?: string;
+    professionId?: number;
+    profession?: string;
     services: string[];
     hazards: string[];
     parts: string[];
