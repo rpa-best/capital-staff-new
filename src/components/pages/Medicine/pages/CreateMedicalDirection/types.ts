@@ -50,6 +50,7 @@ export interface IMedicalDirectionFormData {
     citizenship?: string;
     passportPlace?: string;
     phone?: string;
+    snils?: string;
     payType: number | "";
     medClientId: number;
     subdivisionId?: number;
