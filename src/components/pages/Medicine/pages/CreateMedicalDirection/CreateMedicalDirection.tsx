@@ -39,18 +39,18 @@ const CreateMedicalDirection = () => {
 
     const [formData, setFormData] = useState<IMedicalDirectionFormData>({
         gender: "",
-        surveyTypeId: "",
-        address: "",
-        citizenship: "",
-        passportPlace: "",
-        phone: "",
-        snils: "",
+        surveyTypeId: undefined,
+        address: undefined,
+        citizenship: undefined,
+        passportPlace: undefined,
+        phone: undefined,
+        snils: undefined,
         payType: "",
-        medClientId: "",
-        subdivisionId: "",
-        subdivision: "",
-        professionId: "",
-        profession: "",
+        medClientId: 0,
+        subdivisionId: undefined,
+        subdivision: undefined,
+        professionId: undefined,
+        profession: undefined,
         services: [],
         hazards: [],
         parts: []
@@ -96,7 +96,7 @@ const CreateMedicalDirection = () => {
 
     useEffect(() => {
         if (formData.professionId) {
-            const selectedProfession = professions.find(p => p.id === formData.professionId);
+            const selectedProfession = professions.find(p => Number(p.id) === formData.professionId);
             if (selectedProfession && selectedProfession.hazards.length > 0) {
                 setFormData(prev => ({ ...prev, hazards: selectedProfession.hazards }));
             }
@@ -152,7 +152,7 @@ const CreateMedicalDirection = () => {
         }
     };
 
-    const fetchSubdivisions = async (medClientId: string) => {
+    const fetchSubdivisions = async (medClientId: number) => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/mprofid/medclients/${medClientId}/subdivisions/`, {
                 headers: { Authorization: getToken }
@@ -164,7 +164,7 @@ const CreateMedicalDirection = () => {
         }
     };
 
-    const fetchProfessions = async (medClientId: string) => {
+    const fetchProfessions = async (medClientId: number) => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/mprofid/medclients/${medClientId}/professions/`, {
                 headers: { Authorization: getToken }
@@ -213,7 +213,7 @@ const CreateMedicalDirection = () => {
     };
 
     const handleShowConfirmModal = () => {
-        if (!workerId || !formData.gender || !formData.surveyTypeId || !formData.payType ||
+        if (!workerId || !formData.gender || !formData.payType ||
             !formData.medClientId || formData.services.length === 0) {
             errorMessage("Заполните все обязательные поля!");
             return;
@@ -355,7 +355,7 @@ const CreateMedicalDirection = () => {
                                 type="text"
                                 id="address"
                                 name="address"
-                                value={formData.address}
+                                value={formData.address || ""}
                                 onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                                 placeholder="Введите адрес регистрации"
                             />
@@ -367,7 +367,7 @@ const CreateMedicalDirection = () => {
                                 type="text"
                                 id="citizenship"
                                 name="citizenship"
-                                value={formData.citizenship}
+                                value={formData.citizenship || ""}
                                 onChange={(e) => setFormData({ ...formData, citizenship: e.target.value })}
                                 placeholder="Введите гражданство"
                             />
@@ -379,7 +379,7 @@ const CreateMedicalDirection = () => {
                                 type="text"
                                 id="passportPlace"
                                 name="passportPlace"
-                                value={formData.passportPlace}
+                                value={formData.passportPlace || ""}
                                 onChange={(e) => setFormData({ ...formData, passportPlace: e.target.value })}
                                 placeholder="Введите место выдачи паспорта"
                             />
@@ -390,7 +390,7 @@ const CreateMedicalDirection = () => {
                             <InputMask
                                 mask="+99999999999"
                                 maskChar=""
-                                value={formData.phone}
+                                value={formData.phone || ""}
                                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                             >
                                 {(inputProps: any) => (
@@ -410,7 +410,7 @@ const CreateMedicalDirection = () => {
                             <InputMask
                                 mask="999-999-999 99"
                                 maskChar=""
-                                value={formData.snils}
+                                value={formData.snils || ""}
                                 onChange={(e) => setFormData({ ...formData, snils: e.target.value })}
                             >
                                 {(inputProps: any) => (
@@ -431,10 +431,10 @@ const CreateMedicalDirection = () => {
                     <div className={scss.sectionTitle}>Основная информация</div>
                     <div className={scss.formRow}>
                         <div className={scss.formGroup}>
-                            <label htmlFor="surveyTypeId">Вид осмотра *</label>
+                            <label htmlFor="surveyTypeId">Вид осмотра</label>
                             <select
                                 id="surveyTypeId"
-                                value={formData.surveyTypeId}
+                                value={formData.surveyTypeId || ""}
                                 onChange={(e) => setFormData({ ...formData, surveyTypeId: e.target.value })}
                                 className={scss.select}
                             >
@@ -472,9 +472,9 @@ const CreateMedicalDirection = () => {
                                 value={formData.medClientId}
                                 onChange={(e) => setFormData({
                                     ...formData,
-                                    medClientId: e.target.value,
-                                    subdivisionId: "",
-                                    professionId: ""
+                                    medClientId: Number(e.target.value) || 0,
+                                    subdivisionId: undefined,
+                                    professionId: undefined
                                 })}
                                 className={scss.select}
                             >
@@ -498,9 +498,9 @@ const CreateMedicalDirection = () => {
                                     label="Подразделение из справочника"
                                     options={subdivisions}
                                     placeholder="Выберите подразделение"
-                                    value={subdivisions.find(s => s.id === formData.subdivisionId) || null}
+                                    value={subdivisions.find(s => Number(s.id) === formData.subdivisionId) || null}
                                     onChange={(value: ISubdivision | null) => {
-                                        setFormData({ ...formData, subdivisionId: value?.id || "" });
+                                        setFormData({ ...formData, subdivisionId: value?.id ? Number(value.id) : undefined });
                                     }}
                                     getOptionLabel={(option: ISubdivision) => option.name}
                                     onInputChange={() => {}}
@@ -514,9 +514,9 @@ const CreateMedicalDirection = () => {
                                             onChange={(e) => {
                                                 setIsCustomSubdivision(e.target.checked);
                                                 if (e.target.checked) {
-                                                    setFormData({ ...formData, subdivisionId: "" });
+                                                    setFormData({ ...formData, subdivisionId: undefined });
                                                 } else {
-                                                    setFormData({ ...formData, subdivision: "" });
+                                                    setFormData({ ...formData, subdivision: undefined });
                                                 }
                                             }}
                                         />
@@ -532,7 +532,7 @@ const CreateMedicalDirection = () => {
                                         type="text"
                                         id="subdivision"
                                         name="subdivision"
-                                        value={formData.subdivision}
+                                        value={formData.subdivision || ""}
                                         onChange={(e) => setFormData({ ...formData, subdivision: e.target.value })}
                                         placeholder="Введите подразделение"
                                     />
@@ -551,9 +551,9 @@ const CreateMedicalDirection = () => {
                                     label="Профессия из справочника"
                                     options={professions}
                                     placeholder="Выберите профессию"
-                                    value={professions.find(p => p.id === formData.professionId) || null}
+                                    value={professions.find(p => Number(p.id) === formData.professionId) || null}
                                     onChange={(value: IProfession | null) => {
-                                        setFormData({ ...formData, professionId: value?.id || "" });
+                                        setFormData({ ...formData, professionId: value?.id ? Number(value.id) : undefined });
                                     }}
                                     getOptionLabel={(option: IProfession) => option.name}
                                     onInputChange={() => {}}
@@ -567,9 +567,9 @@ const CreateMedicalDirection = () => {
                                             onChange={(e) => {
                                                 setIsCustomProfession(e.target.checked);
                                                 if (e.target.checked) {
-                                                    setFormData({ ...formData, professionId: "" });
+                                                    setFormData({ ...formData, professionId: undefined });
                                                 } else {
-                                                    setFormData({ ...formData, profession: "" });
+                                                    setFormData({ ...formData, profession: undefined });
                                                 }
                                             }}
                                         />
@@ -585,7 +585,7 @@ const CreateMedicalDirection = () => {
                                         type="text"
                                         id="profession"
                                         name="profession"
-                                        value={formData.profession}
+                                        value={formData.profession || ""}
                                         onChange={(e) => setFormData({ ...formData, profession: e.target.value })}
                                         placeholder="Введите профессию"
                                     />

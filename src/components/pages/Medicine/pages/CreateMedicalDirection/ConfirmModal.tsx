@@ -88,20 +88,20 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
 
                 <div className={scss.confirmSection}>
                     <h3>Договор</h3>
-                    <p>{medClients.find(c => c.id === formData.medClientId)?.name || "-"}</p>
+                    <p>{medClients.find(c => Number(c.id) === formData.medClientId)?.name || "-"}</p>
                 </div>
 
                 {(formData.subdivisionId || formData.subdivision) && (
                     <div className={scss.confirmSection}>
                         <h3>Подразделение</h3>
-                        <p>{subdivisions.find(s => s.id === formData.subdivisionId)?.name || formData.subdivision || "-"}</p>
+                        <p>{subdivisions.find(s => Number(s.id) === formData.subdivisionId)?.name || formData.subdivision || "-"}</p>
                     </div>
                 )}
 
                 {(formData.professionId || formData.profession) && (
                     <div className={scss.confirmSection}>
                         <h3>Профессия</h3>
-                        <p>{professions.find(p => p.id === formData.professionId)?.name || formData.profession || "-"}</p>
+                        <p>{professions.find(p => Number(p.id) === formData.professionId)?.name || formData.profession || "-"}</p>
                     </div>
                 )}
 
