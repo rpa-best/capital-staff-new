@@ -43,6 +43,11 @@ export interface IPart {
     name: string;
 }
 
+export interface IMedCenter {
+    id: number;
+    name: string;
+}
+
 export interface IMedicalDirectionFormData {
     gender: "мужской" | "женский" | "";
     surveyTypeId?: string;
@@ -52,7 +57,8 @@ export interface IMedicalDirectionFormData {
     phone?: string;
     snils?: string;
     payType: number | "";
-    medClientId: number;
+    medClientId?: number;
+    medCentrId?: number;
     subdivisionId?: number;
     subdivision?: string;
     professionId?: number;

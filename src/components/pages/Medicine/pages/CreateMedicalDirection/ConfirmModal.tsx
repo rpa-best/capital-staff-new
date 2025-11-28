@@ -4,6 +4,7 @@ import {
     ISurveyType,
     IPayType,
     IMedClient,
+    IMedCenter,
     ISubdivision,
     IProfession,
     IService,
@@ -25,6 +26,7 @@ interface ConfirmModalProps {
     surveyTypes: ISurveyType[];
     payTypes: IPayType[];
     medClients: IMedClient[];
+    medCenters: IMedCenter[];
     subdivisions: ISubdivision[];
     professions: IProfession[];
     services: IService[];
@@ -43,6 +45,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
     surveyTypes,
     payTypes,
     medClients,
+    medCenters,
     subdivisions,
     professions,
     services,
@@ -89,6 +92,11 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
                 <div className={scss.confirmSection}>
                     <h3>Договор</h3>
                     <p>{medClients.find(c => Number(c.id) === formData.medClientId)?.name || "-"}</p>
+                </div>
+
+                <div className={scss.confirmSection}>
+                    <h3>Медцентр</h3>
+                    <p>{medCenters.find(c => c.id === formData.medCentrId)?.name || "-"}</p>
                 </div>
 
                 {(formData.subdivisionId || formData.subdivision) && (
