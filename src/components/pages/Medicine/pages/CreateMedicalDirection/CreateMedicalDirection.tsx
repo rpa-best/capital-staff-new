@@ -13,6 +13,7 @@ import {
     ISurveyType,
     IPayType,
     IMedClient,
+    IMedCenter,
     ISubdivision,
     IProfession,
     IService,
@@ -46,7 +47,8 @@ const CreateMedicalDirection = () => {
         phone: undefined,
         snils: undefined,
         payType: "",
-        medClientId: 0,
+        medClientId: undefined,
+        medCentrId: undefined,
         subdivisionId: undefined,
         subdivision: undefined,
         professionId: undefined,
@@ -62,6 +64,7 @@ const CreateMedicalDirection = () => {
     const [surveyTypes, setSurveyTypes] = useState<ISurveyType[]>([]);
     const [payTypes, setPayTypes] = useState<IPayType[]>([]);
     const [medClients, setMedClients] = useState<IMedClient[]>([]);
+    const [medCenters, setMedCenters] = useState<IMedCenter[]>([]);
     const [subdivisions, setSubdivisions] = useState<ISubdivision[]>([]);
     const [professions, setProfessions] = useState<IProfession[]>([]);
     const [services, setServices] = useState<IService[]>([]);
@@ -78,6 +81,7 @@ const CreateMedicalDirection = () => {
         fetchSurveyTypes();
         fetchPayTypes();
         fetchMedClients();
+        fetchMedCenters();
         fetchServices();
         fetchHazards();
         fetchParts();
@@ -152,6 +156,18 @@ const CreateMedicalDirection = () => {
         }
     };
 
+    const fetchMedCenters = async () => {
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/mprofid/dictionary/medCenters/`, {
+                headers: { Authorization: getToken }
+            });
+            setMedCenters(response.data.medCenters || []);
+        } catch (error) {
+            errorMessage('Не удалось загрузить медцентры');
+            console.error('Error fetching med centers:', error);
+        }
+    };
+
     const fetchSubdivisions = async (medClientId: number) => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/mprofid/medclients/${medClientId}/subdivisions/`, {
@@ -214,7 +230,7 @@ const CreateMedicalDirection = () => {
 
     const handleShowConfirmModal = () => {
         if (!workerId || !formData.gender || !formData.payType ||
-            !formData.medClientId || formData.services.length === 0) {
+            !formData.medClientId || !formData.medCentrId || formData.services.length === 0) {
             errorMessage("Заполните все обязательные поля!");
             return;
         }
@@ -234,6 +250,7 @@ const CreateMedicalDirection = () => {
             surveyTypeId: formData.surveyTypeId,
             payType: formData.payType,
             medClientId: formData.medClientId,
+            medCentrId: formData.medCentrId,
             services: formData.services,
         };
 
@@ -469,10 +486,10 @@ const CreateMedicalDirection = () => {
                             <label htmlFor="medClientId">Договор *</label>
                             <select
                                 id="medClientId"
-                                value={formData.medClientId}
+                                value={formData.medClientId || ""}
                                 onChange={(e) => setFormData({
                                     ...formData,
-                                    medClientId: Number(e.target.value) || 0,
+                                    medClientId: Number(e.target.value) || undefined,
                                     subdivisionId: undefined,
                                     professionId: undefined
                                 })}
@@ -482,6 +499,26 @@ const CreateMedicalDirection = () => {
                                 {medClients.map(client => (
                                     <option key={client.id} value={client.id}>
                                         {client.name} - Договор №{client.contractNumber} от {client.contractDate}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className={`${scss.formGroup} ${scss.fullWidth}`}>
+                            <label htmlFor="medCentrId">Медцентр *</label>
+                            <select
+                                id="medCentrId"
+                                value={formData.medCentrId || ""}
+                                onChange={(e) => setFormData({
+                                    ...formData,
+                                    medCentrId: Number(e.target.value) || undefined
+                                })}
+                                className={scss.select}
+                            >
+                                <option value="">Выберите медцентр</option>
+                                {medCenters.map(center => (
+                                    <option key={center.id} value={center.id}>
+                                        {center.name}
                                     </option>
                                 ))}
                             </select>
@@ -577,7 +614,7 @@ const CreateMedicalDirection = () => {
                                     </label>
                                 </div>
                             </div>
-
+                
                             {isCustomProfession && (
                                 <div className={scss.formGroup}>
                                     <label htmlFor="profession">Введите профессию</label>
@@ -642,6 +679,7 @@ const CreateMedicalDirection = () => {
                 surveyTypes={surveyTypes}
                 payTypes={payTypes}
                 medClients={medClients}
+                medCenters={medCenters}
                 subdivisions={subdivisions}
                 professions={professions}
                 services={services}
