@@ -35,7 +35,7 @@ interface IMyCompany {
 
 export interface IAuthUser {
     id: number,
-    is_superuser: boolean,
+    isSuperUser: boolean,
     firsName: string | null,
     lastName: string | null,
     surname: string | null,

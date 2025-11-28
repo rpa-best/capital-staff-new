@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import scss from "./Medicine.module.scss";
 import MedicalStaffTable from "./components/MedicalStaffTable/MedicalStaffTable";
 import BlueButton from "../../comps/BlueButton/BlueButton";
 import toast from "react-hot-toast";
 import useAuthData from "../../../hooks/useAuthData";
 import axios from "axios";
-import { IWorkerInvoice } from "./types";
+import {IWorkerInvoice} from "./types";
 import {useUser} from "../../../store/UserState";
-import { usePrefixedNavigate } from "../../../hooks/usePrefixedNavigate";
-import { CREATE_MEDICAL_DIRECTION_PAGE } from "../../../consts/pageConsts";
+import {usePrefixedNavigate} from "../../../hooks/usePrefixedNavigate";
+import {CREATE_MEDICAL_DIRECTION_PAGE} from "../../../consts/pageConsts";
 
 const errorMessage = (message: string) => toast.error(message);
 
 const Medicine = () => {
-    const { getToken, authUser } = useAuthData();
+    const {getToken, authUser} = useAuthData();
     const navigate = usePrefixedNavigate();
     const [workerInvoices, setWorkerInvoices] = useState<IWorkerInvoice[]>([]);
     const [loading, setLoading] = useState(false);
-    const { selectedCompany } = useUser()
+    const {selectedCompany} = useUser()
 
     const fetchWorkerInvoices = async () => {
         setLoading(true);
@@ -49,7 +49,7 @@ const Medicine = () => {
             <div className={scss.headContainer}>
                 <h1>Медицина</h1>
 
-                {authUser?.is_superuser && (
+                {authUser?.isSuperUser && (
                     <div>
                         <BlueButton
                             text="Создать направление"
@@ -61,7 +61,7 @@ const Medicine = () => {
             </div>
 
             <div className={scss.table}>
-                <MedicalStaffTable tableData={workerInvoices} loading={loading} />
+                <MedicalStaffTable tableData={workerInvoices} loading={loading}/>
             </div>
         </>
     );
